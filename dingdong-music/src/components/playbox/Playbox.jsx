@@ -1,7 +1,7 @@
 import React from "react";
 
-function Playbox() {
-  return <div>Playbox</div>;
+function PlayBox() {
+  return <div>PlayBox</div>;
 }
 
-export default Playbox;
+export default PlayBox;
