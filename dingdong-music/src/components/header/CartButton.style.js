@@ -10,6 +10,11 @@ export const Container = styled.button`
   background-color: rgba(0, 0, 0, 0);
   border: none;
   outline: none;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 export const CartIcon = styled.div`

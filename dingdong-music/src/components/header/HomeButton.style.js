@@ -10,7 +10,9 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s;
 
-  img {
+  &:hover {
+    transform: scale(1.1);
   }
 `;

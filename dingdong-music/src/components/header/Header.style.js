@@ -13,6 +13,11 @@ export const Logo = styled.div`
   width: 32px;
   height: 32px;
   cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 
   img {
     width: 100%;
