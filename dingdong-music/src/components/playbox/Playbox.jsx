@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ProgressBar, ProgressCircle } from "./PlayBox.style";
+import "./PlayBox.css";
 
 function PlayBox() {
   const [isPushed, setIsPushed] = useState(false);
@@ -9,7 +10,7 @@ function PlayBox() {
       className="w-full h-full text-white p-4 rounded-md shadow-lg"
       style={{ background: "var(--primary-color3)" }}
     >
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-8 mobile-None">
         <div className="flex gap-3">
           <img src="./images/book_icon.svg" />
           <h2 className="text-lg font-bold">내 라이브러리</h2>
@@ -20,7 +21,7 @@ function PlayBox() {
       </div>
 
       <div
-        className="p-4 rounded-md mb-10"
+        className="p-4 rounded-md mb-10 mobile-None"
         style={{ background: "var(--primary-color)" }}
       >
         <h3 className="text-xl font-semibold mb-2 leading-7">
@@ -33,12 +34,9 @@ function PlayBox() {
           플레이리스트 만들기
         </button>
       </div>
-      <div className="h-28 "></div>
-      <div
-        className="h-60 flex flex-col bg-gray-800 p-4 pt-28 rounded-md relative"
-        style={{ background: "var(--primary-color)" }}
-      >
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="h-28 mobile-None"></div>
+      <div className="h-60 flex flex-col p-4 pt-28 rounded-md relative mobile-On bg-custom-black">
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mobile-None">
           <img src="./images/playlist_logo.svg" />
         </div>
         <p className="text-base text-white font-bold ml-4 mb-10">

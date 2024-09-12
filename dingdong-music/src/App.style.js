@@ -30,7 +30,7 @@ export const SideSection = styled.div`
 
   @media screen and (max-width: 800px) {
     width: 100%;
-    height: 100px;
+    height: 150px;
   }
 `;
 

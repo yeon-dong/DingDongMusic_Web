@@ -1,0 +1,16 @@
+@media screen and (max-width: 800px) {
+  .mobile-On {
+    padding: 0 !important;
+    background: none;
+  }
+  .mobile-None {
+    display: none !important;
+    background: none;
+  }
+}
+
+@media screen and (min-width: 800px) {
+  .bg-custom-black {
+    background: var(--primary-color);
+  }
+}
