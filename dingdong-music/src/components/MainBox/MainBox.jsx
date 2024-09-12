@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   AlbumContainer,
   AlbumImg,
@@ -22,6 +23,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 
 function MainBox() {
   const albumSwiperRef = useRef(null);
+  const navigate = useNavigate(); // useNavigate 훅 사용
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,6 +34,10 @@ function MainBox() {
 
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, []);
+
+  const handleMusicClick = (id) => {
+    navigate(`/music/${id}`); // 음악 ID를 사용하여 MusicDetail로 이동
+  };
 
   return (
     <Container>
@@ -64,14 +70,18 @@ function MainBox() {
           {musics.map((music) => (
             <SwiperSlide key={music.id}>
               <MusicInfoContainer>
-                <MusicImgContainer>
+                <MusicImgContainer onClick={() => handleMusicClick(music.id)}>
                   <MusicImg src={`/images/${music.musicImgSrc}`} />
                   <MusicPlayBtn>
                     <MusicPlayIcon src="/images/Vector.svg" />
                   </MusicPlayBtn>
                 </MusicImgContainer>
-                <MusicMainText>{music.musicName}</MusicMainText>
-                <MusicSubText>{music.artistName}</MusicSubText>
+                <MusicMainText onClick={() => handleMusicClick(music.id)}>
+                  {music.musicName}
+                </MusicMainText>
+                <MusicSubText onClick={() => handleMusicClick(music.id)}>
+                  {music.artistName}
+                </MusicSubText>
               </MusicInfoContainer>
             </SwiperSlide>
           ))}
@@ -108,14 +118,18 @@ function MainBox() {
           {musics.map((music) => (
             <SwiperSlide key={music.id}>
               <MusicInfoContainer>
-                <MusicImgContainer>
+                <MusicImgContainer onClick={() => handleMusicClick(music.id)}>
                   <AlbumImg src={`/images/${music.musicImgSrc}`} />
                   <MusicPlayBtn>
                     <MusicPlayIcon src="/images/Vector.svg" />
                   </MusicPlayBtn>
                 </MusicImgContainer>
-                <MusicMainText>{music.musicName}</MusicMainText>
-                <MusicSubText>{music.artistName}</MusicSubText>
+                <MusicMainText onClick={() => handleMusicClick(music.id)}>
+                  {music.musicName}
+                </MusicMainText>
+                <MusicSubText onClick={() => handleMusicClick(music.id)}>
+                  {music.artistName}
+                </MusicSubText>
               </MusicInfoContainer>
             </SwiperSlide>
           ))}
