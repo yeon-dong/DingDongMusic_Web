@@ -33,4 +33,4 @@ function Playbox(){
   );
 };
 
-export default Playbox;
+export default PlayBox;

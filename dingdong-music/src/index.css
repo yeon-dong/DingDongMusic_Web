@@ -1,0 +1,10 @@
+:root {
+  --primary-color: #2a2a2a;
+  --primary-color2: #7c7c7c;
+  --primary-color3: #121212;
+  --primary-color4: #3d3d3d;
+  --sub-color: #453cd1;
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
