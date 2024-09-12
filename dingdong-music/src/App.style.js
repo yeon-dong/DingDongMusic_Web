@@ -11,6 +11,7 @@ export const AppContainer = styled.div`
 
 export const Content = styled.div`
   width: 100%;
+  height: calc(100vh - 64px);
   flex-grow: 1;
   background-color: blue;
   display: flex;
