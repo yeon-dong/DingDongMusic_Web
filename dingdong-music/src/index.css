@@ -4,4 +4,7 @@
   --primary-color3: #121212;
   --primary-color4: #3d3d3d;
   --sub-color: #453cd1;
+  font-family: "Noto Sans KR", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
