@@ -1,11 +1,18 @@
+import { AppContainer, Content, MainSection, SideSection } from "./App.style";
 import Header from "./components/Header/header";
-import MainBox from "./components/MainBox/MainBox";
 
 function App() {
   return (
     <>
-      <Header></Header>
-      <MainBox></MainBox>
+      <AppContainer>
+        <Header />
+        <Content>
+          <SideSection>{/* Play Box */}</SideSection>
+          <MainSection>
+            {/* by Router, Main Box, Map Box, Search List Box, ... */}
+          </MainSection>
+        </Content>
+      </AppContainer>
     </>
   );
 }
