@@ -21,18 +21,22 @@ export const Content = styled.div`
 `;
 
 export const SideSection = styled.div`
-  flex-basis: 420px;
+  width: 420px;
   height: 100%;
   background-color: yellow;
 
   @media screen and (max-width: 800px) {
-    flex-basis: 100px;
-    flex-shrink: 0;
+    width: 100%;
+    height: 100px;
   }
 `;
 
 export const MainSection = styled.div`
-  flex-grow: 1;
+  width: calc(100% - 420px);
   height: 100%;
   background-color: green;
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;

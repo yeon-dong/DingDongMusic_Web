@@ -2,8 +2,9 @@ import { styled, keyframes } from "styled-components";
 
 export const Container = styled.div`
   background-color: var(--primary-color);
-  width: 1092px;
-  height: 623px;
+  min-width: 1092px;
+  width: 100%;
+  height: 100%;
   border-radius: 12px;
 `;
 
