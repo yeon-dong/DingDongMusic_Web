@@ -1,4 +1,4 @@
-import { styled, keyframes } from "styled-components";
+import { styled, keyframes, css } from "styled-components";
 
 export const ProgressBar = styled.div`
   width: 325px;
@@ -18,5 +18,19 @@ export const ProgressCircle = styled.div`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  transition: left 0.1s ease;
+  transition: left 0.3s ease;
+  ${(props) =>
+    props.$isPushed &&
+    css`
+      animation: ${moveRight} 60s forwards;
+    `}
+`;
+
+const moveRight = keyframes`
+  from {
+    left: 0;
+  }
+  to {
+    left: 100%;
+  }
 `;

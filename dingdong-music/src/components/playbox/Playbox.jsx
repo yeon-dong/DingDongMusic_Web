@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { ProgressBar, ProgressCircle } from "./PlayBox.style";
 
 function PlayBox() {
+  const [isPushed, setIsPushed] = useState(false);
+
   return (
     <div
       className="w-full h-full text-white p-4 rounded-md shadow-lg"
@@ -44,9 +46,14 @@ function PlayBox() {
         </p>
         <div className="w-full flex flex-col">
           <ProgressBar>
-            <ProgressCircle />
+            <ProgressCircle $isPushed={isPushed} />
           </ProgressBar>
-          <button className="mx-auto">
+          <button
+            className="mx-auto"
+            onClick={() => {
+              setIsPushed(!isPushed);
+            }}
+          >
             <img src="./images/playbutton.svg"></img>
           </button>
         </div>
