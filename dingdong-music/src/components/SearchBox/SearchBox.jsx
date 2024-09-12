@@ -12,13 +12,12 @@ import {
   SearchBoxHeading,
 } from "./SearchBox.style";
 import musics from "../../data/data";
+import { useParams } from "react-router-dom";
 
 const SearchBox = () => {
   const [data, setData] = useState(musics);
 
-  const { pathname } = window.location;
-  const keyword = decodeURI(pathname.split("/")[2]);
-  console.log(keyword);
+  const keyword = decodeURI(useParams().keyword).replace("-", " ");
 
   const searchList = useMemo(() => {
     const regex = new RegExp(keyword, "i"); // 'i' 플래그는 대소문자 구분을 하지 않음
