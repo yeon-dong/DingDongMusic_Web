@@ -24,6 +24,9 @@ export const SideSection = styled.div`
   width: 420px;
   height: 100%;
   background-color: yellow;
+  padding-right: 4px;
+  padding-bottom: 6px;
+  padding-left: 6px;
 
   @media screen and (max-width: 800px) {
     width: 100%;
@@ -35,6 +38,9 @@ export const MainSection = styled.div`
   width: calc(100% - 420px);
   height: 100%;
   background-color: green;
+  padding-right: 6px;
+  padding-bottom: 6px;
+  padding-left: 4px;
 
   @media screen and (max-width: 800px) {
     width: 100%;
