@@ -13,34 +13,68 @@ import {
   MusicTextWrap,
   MusicListContainer,
   MusicCardPrice,
+  MusicCardAmount,
+  MusicCardAmountAndPriceContainer,
+  MusicCardInfoContainer,
+  RemoveBtn,
+  CartAmountMainText,
+  CartAllAmountText,
+  CartAllMoneyText,
+  PaymentBtn,
 } from "./CartBox.style";
 import { useDispatch } from "react-redux";
-import { addItem, removeItem } from "../../redux/cartSlice";
+import { removeItem, clearCart } from "../../redux/cartSlice";
+import { useSelector } from "react-redux";
 
 function CartBox() {
   const dispatch = useDispatch();
-  const onIncrease = () => {
-    dispatch(addItem(item.id));
+  const { items, totalAlbums, totalAmount } = useSelector(
+    (state) => state.cart
+  );
+  const removeAllAlbums = () => {
+    dispatch(clearCart());
+  };
+
+  const removeMusic = (music) => {
+    dispatch(removeItem(music));
   };
 
   return (
     <Container>
       <CartHeader>
         <CartHeaderText>장바구니 목록</CartHeaderText>
-        <CartResetBtn>장바구니 초기화</CartResetBtn>
+        <CartResetBtn onClick={() => removeAllAlbums()}>
+          장바구니 초기화
+        </CartResetBtn>
       </CartHeader>
       <CartContainer>
         <MusicListContainer>
-          <MusicCardContainer>
-            <MusicImg />
-            <MusicTextWrap>
-              <MusicCardTitle>이잉</MusicCardTitle>
-              <MusicCardArtist>히이잉</MusicCardArtist>
-            </MusicTextWrap>
-            <MusicCardPrice>23000원</MusicCardPrice>
-          </MusicCardContainer>
+          {items.map((item) => (
+            <MusicCardContainer key={item.id}>
+              <MusicImg src={`/images/${item.musicImgSrc}`} />
+              <MusicCardInfoContainer>
+                <MusicTextWrap>
+                  <MusicCardTitle>{item.musicName}</MusicCardTitle>
+                  <MusicCardArtist>{item.artistName}</MusicCardArtist>
+                </MusicTextWrap>
+                <MusicCardAmountAndPriceContainer>
+                  <MusicCardAmount>{item.amount}개</MusicCardAmount>
+                  <MusicCardPrice>{item.price} 원</MusicCardPrice>
+                </MusicCardAmountAndPriceContainer>
+              </MusicCardInfoContainer>
+              <RemoveBtn
+                src="/images/X_button.svg"
+                onClick={() => removeMusic(item)}
+              />
+            </MusicCardContainer>
+          ))}
         </MusicListContainer>
-        <CartInfoContainer></CartInfoContainer>
+        <CartInfoContainer>
+          <CartAmountMainText>장바구니에 담은 노래</CartAmountMainText>
+          <CartAllAmountText>총 {totalAlbums} 개의 노래</CartAllAmountText>
+          <CartAllMoneyText>총 가격: {totalAmount}원</CartAllMoneyText>
+          <PaymentBtn>결제하기</PaymentBtn>
+        </CartInfoContainer>
       </CartContainer>
     </Container>
   );
