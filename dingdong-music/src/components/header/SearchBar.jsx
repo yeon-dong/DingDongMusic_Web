@@ -17,7 +17,7 @@ const SearchBar = () => {
         onKeyDown={handleSearch}
       />
       <SearchIcon>
-        <img src="./search_icon.svg" />
+        <img src="/search_icon.svg" />
       </SearchIcon>
       <CartButton />
     </Container>

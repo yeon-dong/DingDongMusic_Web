@@ -15,7 +15,7 @@ function Header() {
   return (
     <Container>
       <Logo>
-        <img src="./dingdongmusicicon.svg" alt="딩동뮤직아이콘" />
+        <img src="/dingdongmusicicon.svg" alt="딩동뮤직아이콘" />
       </Logo>
       <SearchBox>
         <HomeButton />
