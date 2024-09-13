@@ -43,7 +43,7 @@ const SearchBox = () => {
       <SearchBoxHeading>검색 결과</SearchBoxHeading>
       <SearchBoxContent>
         {searchList.map((music, i) => (
-          <MusicInfoContainer>
+          <MusicInfoContainer key={i}>
             <MusicImgContainer>
               <MusicImg src={`/images/${music.musicImgSrc}`} />
               <MusicPlayBtn>

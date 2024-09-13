@@ -22,10 +22,10 @@ export const SearchBoxContent = styled.div`
   height: calc(100% - 70px);
   display: flex;
   flex-wrap: wrap;
-  justify-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   align-content: flex-start;
   overflow-y: auto;
+  padding: 16px;
 `;
 
 export const MusicInfoContainer = styled.div`
@@ -51,6 +51,7 @@ export const MusicImg = styled.img`
   border-radius: 100%;
   margin-top: 10px;
   margin-left: 11px;
+  object-fit: cover;
 `;
 
 const slideUp = keyframes`
