@@ -12,8 +12,11 @@ import {
   MusicTitle,
 } from "./MusicDetail.style";
 import musics from "../../data/data"; // musics 데이터 가져오기
+import { useDispatch } from "react-redux";
+import { addItem, removeItem } from "../../redux/cartSlice";
 
 function MusicDetail() {
+  const dispatch = useDispatch();
   const { id } = useParams(); // URL에서 id 추출
   const navigate = useNavigate(); // useNavigate 훅 사용
   const music = musics.find((music) => music.id === parseInt(id)); // 해당 음악 정보 찾기
@@ -33,6 +36,12 @@ function MusicDetail() {
     navigate("/"); // '/' 경로로 이동
   };
 
+  const addMusicToCart = (music) => {
+    console.log("이거추가" + JSON.stringify(music));
+    dispatch(addItem(music));
+    navigate("/cart"); // '/cart' 경로로 이동
+  };
+
   return (
     <Container>
       <MusicDetailHeader>
@@ -43,7 +52,9 @@ function MusicDetail() {
       <MusicTitle>{music.musicName}</MusicTitle>
       <ArtistText>{music.artistName}</ArtistText>
       <DetailText>{music.description}</DetailText>
-      <AddCartBtn>장바구니에 담기</AddCartBtn>
+      <AddCartBtn onClick={() => addMusicToCart(music)}>
+        장바구니에 담기
+      </AddCartBtn>
     </Container>
   );
 }
