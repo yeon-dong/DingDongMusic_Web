@@ -29,6 +29,10 @@ export const Container = styled.div`
   input::placeholder {
     color: var(--primary-color2);
   }
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const SearchIcon = styled.div`
