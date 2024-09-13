@@ -23,10 +23,13 @@ export const Content = styled.div`
 export const SideSection = styled.div`
   width: 420px;
   height: 100%;
+  padding-right: 4px;
+  padding-bottom: 6px;
+  padding-left: 6px;
 
   @media screen and (max-width: 800px) {
     width: 100%;
-    height: 100px;
+    height: 150px;
   }
 `;
 
