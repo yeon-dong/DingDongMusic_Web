@@ -15,7 +15,7 @@ export const Container = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-  min-width: 1092px;
+  // min-width: 1092px;
   width: 100%;
   height: auto;
 `;
@@ -43,8 +43,8 @@ export const MusicContainer = styled.div`
 `;
 
 export const MusicInfoContainer = styled.div`
-  width: 180px;
-  height: 235px;
+  width: 100%;
+  padding: 8px;
   border-radius: 12px;
   background-color: transparent; /* 기본 배경색 설정 */
   transition: background-color 0.3s ease; /* 배경색 전환 애니메이션 추가 */
@@ -60,11 +60,10 @@ export const MusicImgContainer = styled.div`
 
 export const MusicImg = styled.img`
   cursor: pointer;
-  width: 160px;
-  height: 160px;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 100%;
-  margin-top: 10px;
-  margin-left: 11px;
+  object-fit: cover;
 `;
 
 const slideUp = keyframes`
@@ -160,9 +159,8 @@ export const AlbumContainer = styled.div`
 `;
 
 export const AlbumImg = styled.img`
-  width: 160px;
-  height: 160px;
+  width: 100%;
+  aspect-ratio: 1;
   border-radius: 12px;
-  margin-top: 10px;
-  margin-left: 11px;
+  object-fit: cover;
 `;
