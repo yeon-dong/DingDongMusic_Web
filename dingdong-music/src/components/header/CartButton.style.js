@@ -15,6 +15,10 @@ export const Container = styled.button`
   &:hover {
     transform: scale(1.1);
   }
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;
 
 export const CartIcon = styled.div`
