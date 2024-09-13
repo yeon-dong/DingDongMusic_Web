@@ -1,45 +1,31 @@
-import { styled, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Container = styled.div`
-  background-color: var(--primary-color);
-
   width: 100%;
   height: 100%;
+  background-color: var(--primary-color);
   border-radius: 12px;
-  overflow-x: hidden;
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
-export const ContentWrapper = styled.div`
-  min-width: 1092px;
-  width: 100%;
-  height: auto;
-`;
-
-export const MainText = styled.h1`
+export const SearchBoxHeading = styled.h3`
   color: white;
+  height: 70px;
   font-size: 30px;
-  font-weight: bold;
-  padding-top: 18px;
-  margin-left: 32px;
-`;
-
-export const MainText2 = styled.h1`
-  color: white;
-  font-size: 30px;
-  font-weight: bold;
-  margin-top: 22px;
-  margin-left: 32px;
-`;
-
-export const MusicContainer = styled.div`
-  margin-top: 8px;
-  margin-left: 12px;
+  font-weight: 700;
+  padding: 18px 32px;
   display: flex;
+  align-items: center;
+`;
+
+export const SearchBoxContent = styled.div`
+  width: 100%;
+  height: calc(100% - 70px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-items: flex-start;
+  justify-content: center;
+  align-content: flex-start;
+  overflow-y: auto;
 `;
 
 export const MusicInfoContainer = styled.div`
@@ -151,18 +137,4 @@ export const MusicSubText = styled.h3`
   overflow: hidden;
   -webkit-line-clamp: 1; /* 1줄로 제한 */
   text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
-`;
-
-export const AlbumContainer = styled.div`
-  margin-top: 8px;
-  margin-left: 12px;
-  display: flex;
-`;
-
-export const AlbumImg = styled.img`
-  width: 160px;
-  height: 160px;
-  border-radius: 12px;
-  margin-top: 10px;
-  margin-left: 11px;
 `;

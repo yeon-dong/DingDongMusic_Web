@@ -4,6 +4,7 @@ import Header from "./components/Header/Header";
 import MainBox from "./components/MainBox/MainBox";
 import PlayBox from "./components/PlayBox/PlayBox";
 import MusicDetail from "./components/MusicDetail/MusicDetail";
+import SearchBox from "./components/SearchBox/SearchBox";
 
 function App() {
   return (
@@ -18,7 +19,8 @@ function App() {
             <MainSection>
               <Routes>
                 <Route path="/" element={<MainBox />} />
-                <Route path="/search" element={<MainBox />} />
+                <Route path="/search" element={<SearchBox />} />
+                <Route path="/search/:keyword" element={<SearchBox />} />
                 <Route path="/music/:id" element={<MusicDetail />} />
               </Routes>
             </MainSection>
