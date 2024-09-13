@@ -11,18 +11,14 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addItem: (state, action) => {
-      console.log(action.payload);
-      state.items.push({ ...action.payload, amount: 1 });
-      //   const existingItem = state.items.find(
-      //     (item) => item.id === action.payload.id
-      //   );
-      //   console.log("Existing item:", existingItem);
-
-      //   if (existingItem) {
-      //     existingItem.amount += 1; // 앨범이 이미 존재하면 수량 증가
-      //   } else {
-      //     state.items.push({ ...action.payload, amount: 1 }); // 새 앨범 추가
-      //   }
+      const existingItem = state.items.find(
+        (item) => item.id === action.payload.id
+      );
+      if (existingItem) {
+        existingItem.amount += 1; // 앨범이 이미 존재하면 수량 증가
+      } else {
+        state.items = [...state.items, { ...action.payload, amount: 1 }]; // 새 앨범 추가
+      }
       console.log("Updated items:", state.items);
     },
     removeItem: (state, action) => {
