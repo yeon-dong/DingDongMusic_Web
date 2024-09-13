@@ -21,16 +21,18 @@ const cartSlice = createSlice({
       }
     },
     removeItem: (state, action) => {
-      const item = state.items.find((item) => item.id === action.payload);
+      const music = action.payload; // action.payload에서 music 객체를 가져옴
+      const item = state.items.find((item) => item.id === music.id); // music.id로 아이템 찾기
       if (item) {
         if (item.amount > 1) {
           item.amount -= 1; // 수량 감소
         } else {
-          state.items = state.items.filter(
-            (item) => item.id !== action.payload
-          ); // 수량이 0이면 제거
+          state.items = state.items.filter((item) => item.id !== music.id); // 수량이 1 이하이면 제거
         }
       }
+    },
+    clearCart: (state) => {
+      state.items = []; // 장바구니 초기화
     },
     calculateTotals: (state) => {
       let totalAlbums = 0;
@@ -46,5 +48,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, calculateTotals } = cartSlice.actions;
+export const { addItem, removeItem, calculateTotals, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;
