@@ -3,6 +3,7 @@ import { ProgressBar, ProgressCircle } from "./PlayBox.style";
 import "./PlayBox.css";
 
 function PlayBox() {
+  const playlistItems = useSelector((state) => state.playlistCart);
   const [isPushed, setIsPushed] = useState(false);
 
   return (
