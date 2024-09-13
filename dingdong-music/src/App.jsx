@@ -19,6 +19,7 @@ function App() {
             <MainSection>
               <Routes>
                 <Route path="/" element={<MainBox />} />
+                <Route path="/search" element={<SearchBox />} />
                 <Route path="/search/:keyword" element={<SearchBox />} />
                 <Route path="/music/:id" element={<MusicDetail />} />
               </Routes>

@@ -4,11 +4,8 @@ export const Container = styled.div`
   position: relative;
   width: 474px;
   height: 48px;
-  border-radius: 24px;
   background-color: var(--primary-color);
-  overflow: hidden;
-  padding-left: 48px;
-  padding-right: 56px;
+  border-radius: 24px;
 
   input {
     width: 100%;
@@ -18,6 +15,15 @@ export const Container = styled.div`
     border: none;
     outline: none;
     font-size: 18px;
+    padding-left: 48px;
+    padding-right: 56px;
+    border-radius: 24px;
+    transition: outline 0.1s;
+    cursor: pointer;
+
+    &:focus {
+      outline: 2px solid white;
+    }
   }
 
   input::placeholder {

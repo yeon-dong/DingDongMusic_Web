@@ -17,7 +17,12 @@ import { useParams } from "react-router-dom";
 const SearchBox = () => {
   const [data, setData] = useState(musics);
 
-  const keyword = decodeURI(useParams().keyword).replace("-", " ");
+  const encodedKeyword = useParams().keyword;
+  const keyword = useMemo(() => {
+    return Boolean(encodedKeyword)
+      ? decodeURI(encodedKeyword).replace("-", " ")
+      : "";
+  }, [encodedKeyword]);
 
   const searchList = useMemo(() => {
     const regex = new RegExp(keyword, "i"); // 'i' 플래그는 대소문자 구분을 하지 않음

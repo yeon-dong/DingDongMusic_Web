@@ -22,11 +22,18 @@ const SearchBar = () => {
     setInputText(e.target.value);
   }, []);
 
+  const handleInputClick = useCallback(() => {
+    const searchKeyword = keyword.trim().replace(" ", "-");
+
+    navigate(`/search${searchKeyword.length > 0 ? `/${searchKeyword}` : ""}`);
+  }, [keyword]);
+
   return (
     <Container>
       <input
         placeholder="어떤 노래를 구매하고 싶으신가요?"
         onChange={handleKeywordChange}
+        onClick={handleInputClick}
       />
       <SearchIcon>
         <img src="/search_icon.svg" />
