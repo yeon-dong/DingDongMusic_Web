@@ -2,10 +2,22 @@ import { styled, keyframes } from "styled-components";
 
 export const Container = styled.div`
   background-color: var(--primary-color);
-  min-width: 1092px;
+
   width: 100%;
   height: 100%;
   border-radius: 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const ContentWrapper = styled.div`
+  min-width: 1092px;
+  width: 100%;
+  height: auto;
 `;
 
 export const MainText = styled.h1`
