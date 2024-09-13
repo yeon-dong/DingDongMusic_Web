@@ -30,6 +30,10 @@ export const SideSection = styled.div`
   @media screen and (max-width: 800px) {
     width: 100%;
     height: 150px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
   }
 `;
 
@@ -42,6 +46,7 @@ export const MainSection = styled.div`
 
   @media screen and (max-width: 800px) {
     width: 100%;
-    height: calc(100% - 100px);
+    height: 100%;
+    padding-bottom: 154px;
   }
 `;
