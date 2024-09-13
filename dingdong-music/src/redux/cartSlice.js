@@ -19,7 +19,6 @@ const cartSlice = createSlice({
       } else {
         state.items = [...state.items, { ...action.payload, amount: 1 }]; // 새 앨범 추가
       }
-      console.log("Updated items:", state.items);
     },
     removeItem: (state, action) => {
       const item = state.items.find((item) => item.id === action.payload);
