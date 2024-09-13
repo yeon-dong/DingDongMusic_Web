@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 export const Container = styled.div`
@@ -12,7 +13,7 @@ export const Container = styled.div`
   z-index: 30;
 `;
 
-export const Logo = styled.div`
+export const Logo = styled(Link)`
   width: 32px;
   height: 32px;
   cursor: pointer;
