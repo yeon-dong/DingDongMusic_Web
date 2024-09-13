@@ -13,7 +13,7 @@ import {
 } from "./MusicDetail.style";
 import musics from "../../data/data"; // musics 데이터 가져오기
 import { useDispatch } from "react-redux";
-import { addItem, removeItem } from "../../redux/cartSlice";
+import { addItem, calculateTotals } from "../../redux/cartSlice";
 
 function MusicDetail() {
   const dispatch = useDispatch();
@@ -37,8 +37,8 @@ function MusicDetail() {
   };
 
   const addMusicToCart = (music) => {
-    console.log("이거추가" + JSON.stringify(music));
     dispatch(addItem(music));
+    dispatch(calculateTotals());
     navigate("/cart"); // '/cart' 경로로 이동
   };
 
