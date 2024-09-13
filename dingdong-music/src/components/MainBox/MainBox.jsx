@@ -39,6 +39,10 @@ function MainBox() {
     navigate(`/music/${id}`); // 음악 ID를 사용하여 MusicDetail로 이동
   };
 
+  const addPlayList = () => {
+    console.log("플레이리스트로");
+  };
+
   return (
     <Container>
       <MainText>인기 아티스트</MainText>
@@ -72,7 +76,12 @@ function MainBox() {
               <MusicInfoContainer>
                 <MusicImgContainer onClick={() => handleMusicClick(music.id)}>
                   <MusicImg src={`/images/${music.musicImgSrc}`} />
-                  <MusicPlayBtn>
+                  <MusicPlayBtn
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      addPlayList();
+                    }}
+                  >
                     <MusicPlayIcon src="/images/Vector.svg" />
                   </MusicPlayBtn>
                 </MusicImgContainer>
@@ -120,7 +129,12 @@ function MainBox() {
               <MusicInfoContainer>
                 <MusicImgContainer onClick={() => handleMusicClick(music.id)}>
                   <AlbumImg src={`/images/${music.musicImgSrc}`} />
-                  <MusicPlayBtn>
+                  <MusicPlayBtn
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      addPlayList();
+                    }}
+                  >
                     <MusicPlayIcon src="/images/Vector.svg" />
                   </MusicPlayBtn>
                 </MusicImgContainer>
