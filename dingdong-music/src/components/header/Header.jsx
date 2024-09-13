@@ -31,8 +31,8 @@ function Header() {
   }, [isMobileMenuShow]);
 
   return (
-    <Container isMobileSearchBarShow={isMobileSearchBarShow}>
-      <Logo>
+    <Container>
+      <Logo to="/">
         <img src="/dingdongmusicicon.svg" alt="딩동뮤직아이콘" />
       </Logo>
       <SearchBox>
