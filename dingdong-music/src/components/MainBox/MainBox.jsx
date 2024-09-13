@@ -4,6 +4,7 @@ import {
   AlbumContainer,
   AlbumImg,
   Container,
+  ContentWrapper,
   MainText,
   MainText2,
   MusicContainer,
@@ -45,6 +46,102 @@ function MainBox() {
 
   return (
     <Container>
+      <ContentWrapper>
+        <MainText>인기 아티스트</MainText>
+        <MusicContainer>
+          <Swiper
+            slidesPerView={6}
+            spaceBetween={0}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 0,
+              },
+              768: {
+                slidesPerView: 4,
+                spaceBetween: 0,
+              },
+              1024: {
+                slidesPerView: 6,
+                spaceBetween: 0,
+              },
+            }}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            modules={[Pagination, Autoplay]}
+            className="mySwiper"
+          >
+            {musics.map((music) => (
+              <SwiperSlide key={music.id}>
+                <MusicInfoContainer>
+                  <MusicImgContainer onClick={() => handleMusicClick(music.id)}>
+                    <MusicImg src={`/images/${music.musicImgSrc}`} />
+                    <MusicPlayBtn>
+                      <MusicPlayIcon src="/images/Vector.svg" />
+                    </MusicPlayBtn>
+                  </MusicImgContainer>
+                  <MusicMainText onClick={() => handleMusicClick(music.id)}>
+                    {music.musicName}
+                  </MusicMainText>
+                  <MusicSubText onClick={() => handleMusicClick(music.id)}>
+                    {music.artistName}
+                  </MusicSubText>
+                </MusicInfoContainer>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </MusicContainer>
+        <MainText2>인기 앨범</MainText2>
+        <AlbumContainer>
+          <Swiper
+            ref={albumSwiperRef} // ref 추가
+            slidesPerView={6}
+            spaceBetween={0}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 0,
+              },
+              768: {
+                slidesPerView: 4,
+                spaceBetween: 0,
+              },
+              1024: {
+                slidesPerView: 6,
+                spaceBetween: 0,
+              },
+            }}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+              stopOnLastSlide: false,
+            }}
+            modules={[Pagination, Autoplay]}
+            className="mySwiper"
+          >
+            {musics.map((music) => (
+              <SwiperSlide key={music.id}>
+                <MusicInfoContainer>
+                  <MusicImgContainer onClick={() => handleMusicClick(music.id)}>
+                    <AlbumImg src={`/images/${music.musicImgSrc}`} />
+                    <MusicPlayBtn>
+                      <MusicPlayIcon src="/images/Vector.svg" />
+                    </MusicPlayBtn>
+                  </MusicImgContainer>
+                  <MusicMainText onClick={() => handleMusicClick(music.id)}>
+                    {music.musicName}
+                  </MusicMainText>
+                  <MusicSubText onClick={() => handleMusicClick(music.id)}>
+                    {music.artistName}
+                  </MusicSubText>
+                </MusicInfoContainer>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </AlbumContainer>
+      </ContentWrapper>
       <MainText>인기 아티스트</MainText>
       <MusicContainer>
         <Swiper

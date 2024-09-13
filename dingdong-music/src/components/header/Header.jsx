@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { Container, Logo, SearchBox, UserBox } from "./Header.style";
 import HomeButton from "./HomeButton";
-import SearchBar from "./SearchBar";
 import LoginButton from "./LoginButton";
 import UserButton from "./UserButton";
+import SearchBar from "./SearchBar";
 
 function Header() {
   const [isLoggedIn, setLoggedIn] = useState(false);
