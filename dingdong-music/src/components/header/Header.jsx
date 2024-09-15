@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import {
   Container,
   Logo,
+  MobileLoginButton,
   MobileMenuBox,
   SearchBox,
   UserBox,
@@ -12,6 +13,7 @@ import UserButton from "./UserButton";
 import SearchBar from "./SearchBar";
 import MobileSearchButton from "./MobileSearchButton";
 import MobileMenu from "./MobileMenu";
+import CartButton from "./CartButton";
 
 function Header() {
   const [isMobileSearchBarShow, setMobileSearchBarShow] = useState(false);
@@ -47,12 +49,14 @@ function Header() {
           isMobileSearchBarShow={isMobileSearchBarShow}
           onMobileSearchButtonClick={handleMobileSearchButtonClick}
         />
-        <MobileMenu
-          isMobileMenuShow={isMobileMenuShow}
-          onMobileMenuClick={handleMobileMenuClick}
-          isLoggedIn={isLoggedIn}
-          onLogin={handleLogin}
-        />
+        <CartButton color="white" />
+        {isLoggedIn ? (
+          <UserButton />
+        ) : (
+          <MobileLoginButton onClick={handleLogin}>
+            <img src="/user_icon.svg" alt="Mobile Login Icon" />
+          </MobileLoginButton>
+        )}
       </MobileMenuBox>
     </Container>
   );

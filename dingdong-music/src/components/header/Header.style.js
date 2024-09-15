@@ -55,3 +55,12 @@ export const MobileMenuBox = styled.div`
     display: flex;
   }
 `;
+
+export const MobileLoginButton = styled.button`
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+`;

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import CartButton from "./CartButton";
-import { Container, SearchIcon } from "./SearchBar.style";
+import { CartButtonWrapper, Container, SearchIcon } from "./SearchBar.style";
 import { useNavigate } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
 
@@ -38,7 +38,9 @@ const SearchBar = () => {
       <SearchIcon>
         <img src="/search_icon.svg" />
       </SearchIcon>
-      <CartButton />
+      <CartButtonWrapper>
+        <CartButton />
+      </CartButtonWrapper>
     </Container>
   );
 };
