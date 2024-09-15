@@ -9,6 +9,8 @@ import SearchBar from "./SearchBar";
 const MobileSearchButton = ({
   isMobileSearchBarShow,
   onMobileSearchButtonClick,
+  inputText,
+  onInputTextChange,
 }) => {
   return (
     <Container>
@@ -18,7 +20,10 @@ const MobileSearchButton = ({
         </SearchIcon>
       </button>
       <SearchBarContainer $isShow={isMobileSearchBarShow}>
-        <SearchBar />
+        <SearchBar
+          inputText={inputText}
+          onInputTextChange={onInputTextChange}
+        />
       </SearchBarContainer>
     </Container>
   );
