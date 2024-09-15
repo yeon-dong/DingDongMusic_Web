@@ -46,3 +46,11 @@ export const SearchIcon = styled.div`
   align-items: center;
   color: var(--primary-color2);
 `;
+
+export const CartButtonWrapper = styled.div`
+  position: absolute;
+  right: 8px;
+  top: 0;
+  width: 48px;
+  height: 48px;
+`;
