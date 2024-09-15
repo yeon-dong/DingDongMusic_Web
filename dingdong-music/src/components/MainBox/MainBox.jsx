@@ -139,7 +139,7 @@ function MainBox() {
                     <MusicPlayBtn
                       onClick={(event) => {
                         event.stopPropagation();
-                        handlePlaylistClick();
+                        handlePlaylistClick(music);
                       }}
                     >
                       <MusicPlayIcon src="/images/Vector.svg" />

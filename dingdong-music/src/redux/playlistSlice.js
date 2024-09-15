@@ -2,9 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   items: [],
-  musicName: "",
-  musicImgSrc: "",
-  artistName: "",
+  totalAlbums: 0,
+  totalAmount: 0,
 };
 
 const playlistSlice = createSlice({
