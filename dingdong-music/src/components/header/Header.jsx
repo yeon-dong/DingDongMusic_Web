@@ -14,11 +14,15 @@ import SearchBar from "./SearchBar";
 import MobileSearchButton from "./MobileSearchButton";
 import MobileMenu from "./MobileMenu";
 import CartButton from "./CartButton";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   const [isMobileSearchBarShow, setMobileSearchBarShow] = useState(false);
   const [isMobileMenuShow, setMobileMenuShow] = useState(false);
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [inputText, setInputText] = useState("");
+
+  const navigate = useNavigate();
 
   const handleLogin = useCallback(() => {
     setLoggedIn(true);
@@ -32,14 +36,28 @@ function Header() {
     setMobileMenuShow(!isMobileMenuShow);
   }, [isMobileMenuShow]);
 
+  const handleHomeClick = useCallback(() => {
+    setMobileSearchBarShow(false);
+    setInputText("");
+
+    navigate("/");
+  }, []);
+
+  const handleInputTextChange = useCallback((e) => {
+    setInputText(e.target.value);
+  }, []);
+
   return (
     <Container>
-      <Logo to="/">
+      <Logo onClick={handleHomeClick}>
         <img src="/dingdongmusicicon.svg" alt="딩동뮤직아이콘" />
       </Logo>
       <SearchBox>
-        <HomeButton />
-        <SearchBar />
+        <HomeButton onHomeClick={handleHomeClick} />
+        <SearchBar
+          inputText={inputText}
+          onInputTextChange={handleInputTextChange}
+        />
       </SearchBox>
       <UserBox>
         {isLoggedIn ? <UserButton /> : <LoginButton onClick={handleLogin} />}
@@ -48,6 +66,8 @@ function Header() {
         <MobileSearchButton
           isMobileSearchBarShow={isMobileSearchBarShow}
           onMobileSearchButtonClick={handleMobileSearchButtonClick}
+          inputText={inputText}
+          onInputTextChange={handleInputTextChange}
         />
         <CartButton color="white" />
         {isLoggedIn ? (

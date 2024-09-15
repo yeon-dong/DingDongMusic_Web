@@ -13,7 +13,7 @@ export const Container = styled.div`
   z-index: 30;
 `;
 
-export const Logo = styled(Link)`
+export const Logo = styled.div`
   width: 32px;
   height: 32px;
   cursor: pointer;
