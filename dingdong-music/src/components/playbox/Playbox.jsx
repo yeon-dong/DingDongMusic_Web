@@ -1,15 +1,56 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ProgressBar, ProgressCircle } from "./PlayBox.style";
 import "./PlayBox.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setPlayingMusic,
+  setIsPlaying,
+  setPause,
+  resetMusic,
+} from "../../redux/playingMusicSlice";
+import { setSelectedIndex } from "../../redux/playlistSlice";
 
 function PlayBox() {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedSong, setSelectedSong] = useState(null);
-  const { items, totalAlbums, totalAmount } = useSelector(
+  const dispatch = useDispatch();
+
+  //플레이리스트 부분
+  const { items, totalAlbums, totalAmount, selectedIndex } = useSelector(
     (state) => state.playlist
   );
-  const [isPushed, setIsPushed] = useState(false);
+
+  //현재 재생 음악
+  const selectedSong = useSelector((state) => state.playingMusic);
+
+  // 플레이리스트 하단 갱신 참조용
+  const scrollContainerRef = useRef(null);
+
+  const handlePlayingMusic = (music) => {
+    dispatch(setPlayingMusic(music));
+    dispatch(resetMusic());
+  };
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight;
+    }
+  }, [items]);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = selectedIndex * 68;
+      scrollContainerRef.current.scrollTop = scrollAmount;
+    }
+  }, [selectedIndex]);
+
+  const handleAnimationEnd = () => {
+    if (selectedIndex + 1 < items.length) {
+      let tmp = selectedIndex + 1;
+      dispatch(setSelectedIndex(tmp));
+      dispatch(setPlayingMusic(items[tmp]));
+      dispatch(resetMusic());
+    } else dispatch(setPause());
+  };
 
   const playlistEmpty = () => (
     <div
@@ -33,16 +74,23 @@ function PlayBox() {
     </div>
   );
   const playlistWithItem = () => (
-    <div className="w-full h-40 mb-5 overflow-auto scroll-hide mobile-None">
+    <div
+      className="w-full h-40 mb-5 overflow-auto scroll-hide mobile-None"
+      ref={scrollContainerRef}
+    >
       {items.map((item, i) => (
         <div
           key={i}
-          className={`p-1 rounded-md mb-2 mobile-None
-            ${selectedIndex === i ? "text-green-500" : ""}`}
+          className={`p-1 rounded-md mb-2 mobile-None ${
+            selectedIndex === i ? "text-green-500" : ""
+          }`}
           style={{ background: "var(--primary-color)" }}
           onClick={() => {
-            setSelectedIndex(i);
-            setSelectedSong(item);
+            dispatch(setSelectedIndex(i));
+            handlePlayingMusic(item);
+            selectedSong.isPlaying
+              ? dispatch(resetMusic())
+              : dispatch(setIsPlaying());
           }}
         >
           <div className="flex">
@@ -82,7 +130,7 @@ function PlayBox() {
       {items.length > 0 ? playlistWithItem() : playlistEmpty()}
 
       <div className="h-28 mobile-None"></div>
-      {selectedSong === null ? (
+      {selectedSong.musicName === "" ? (
         <div className="h-60 flex flex-col p-4 pt-28 rounded-md relative mobile-On bg-custom-black">
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mobile-None">
             <img src="./images/playlist_logo.svg" />
@@ -94,7 +142,7 @@ function PlayBox() {
 
           <div className="w-full flex flex-col">
             <ProgressBar>
-              <ProgressCircle $isPushed={isPushed} />
+              <ProgressCircle $isPushed={selectedSong.isPlaying} />
             </ProgressBar>
             <button className="mx-auto">
               <img src="./images/playbutton.svg"></img>
@@ -116,15 +164,20 @@ function PlayBox() {
           </div>
           <div className="w-full flex flex-col">
             <ProgressBar>
-              <ProgressCircle $isPushed={isPushed} />
+              <ProgressCircle
+                $isPushed={selectedSong.isPlaying}
+                onAnimationEnd={handleAnimationEnd}
+              />
             </ProgressBar>
             <button
               className="mx-auto"
               onClick={() => {
-                setIsPushed(!isPushed);
+                !selectedSong.isPlaying
+                  ? dispatch(setIsPlaying())
+                  : dispatch(setPause());
               }}
             >
-              {isPushed ? (
+              {selectedSong.isPlaying ? (
                 <img src="./images/pausebutton.svg"></img>
               ) : (
                 <img src="./images/playbutton.svg"></img>

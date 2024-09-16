@@ -21,8 +21,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
-import { addPlaylist } from "../../redux/playlistSlice";
+import { addPlaylist, setSelectedIndex } from "../../redux/playlistSlice";
 import { useDispatch } from "react-redux";
+import { setPlayingMusic, resetMusic } from "../../redux/playingMusicSlice";
 
 function MainBox() {
   const dispatch = useDispatch();
@@ -46,6 +47,9 @@ function MainBox() {
   const handlePlaylistClick = (music) => {
     console.log("플레이리스트로");
     dispatch(addPlaylist(music));
+    dispatch(setPlayingMusic(music));
+    dispatch(resetMusic());
+    dispatch(setSelectedIndex());
     console.log(music);
   };
 
