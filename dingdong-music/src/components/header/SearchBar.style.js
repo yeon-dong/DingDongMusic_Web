@@ -53,4 +53,8 @@ export const CartButtonWrapper = styled.div`
   top: 0;
   width: 48px;
   height: 48px;
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;
