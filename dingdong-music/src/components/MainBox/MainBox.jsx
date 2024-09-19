@@ -21,8 +21,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
+import { addPlaylist, setSelectedIndex } from "../../redux/playlistSlice";
+import { useDispatch } from "react-redux";
+import { setPlayingMusic, resetMusic } from "../../redux/playingMusicSlice";
 
 function MainBox() {
+  const dispatch = useDispatch();
   const albumSwiperRef = useRef(null);
   const navigate = useNavigate(); // useNavigate 훅 사용
 
@@ -38,6 +42,15 @@ function MainBox() {
 
   const handleMusicClick = (id) => {
     navigate(`/music/${id}`); // 음악 ID를 사용하여 MusicDetail로 이동
+  };
+
+  const handlePlaylistClick = (music) => {
+    console.log("플레이리스트로");
+    dispatch(addPlaylist(music));
+    dispatch(setPlayingMusic(music));
+    dispatch(resetMusic());
+    dispatch(setSelectedIndex());
+    console.log(music);
   };
 
   return (
@@ -74,7 +87,12 @@ function MainBox() {
                 <MusicInfoContainer>
                   <MusicImgContainer onClick={() => handleMusicClick(music.id)}>
                     <MusicImg src={`/images/${music.musicImgSrc}`} />
-                    <MusicPlayBtn>
+                    <MusicPlayBtn
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handlePlaylistClick(music);
+                      }}
+                    >
                       <MusicPlayIcon src="/images/Vector.svg" />
                     </MusicPlayBtn>
                   </MusicImgContainer>
@@ -122,7 +140,12 @@ function MainBox() {
                 <MusicInfoContainer>
                   <MusicImgContainer onClick={() => handleMusicClick(music.id)}>
                     <AlbumImg src={`/images/${music.musicImgSrc}`} />
-                    <MusicPlayBtn>
+                    <MusicPlayBtn
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handlePlaylistClick(music);
+                      }}
+                    >
                       <MusicPlayIcon src="/images/Vector.svg" />
                     </MusicPlayBtn>
                   </MusicImgContainer>
