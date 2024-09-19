@@ -81,7 +81,7 @@ function PlayBox() {
       {items.map((item, i) => (
         <div
           key={i}
-          className={`p-1 rounded-md mb-2 mobile-None ${
+          className={`p-1 rounded-md mb-2 mobile-None cursor-pointer ${
             selectedIndex === i ? "text-green-500" : ""
           }`}
           style={{ background: "var(--primary-color)" }}
