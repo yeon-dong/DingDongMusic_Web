@@ -14,3 +14,7 @@
     background: var(--primary-color);
   }
 }
+
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}

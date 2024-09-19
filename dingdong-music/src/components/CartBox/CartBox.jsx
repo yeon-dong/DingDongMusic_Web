@@ -23,7 +23,7 @@ import {
   PaymentBtn,
 } from "./CartBox.style";
 import { useDispatch } from "react-redux";
-import { removeItem, clearCart } from "../../redux/cartSlice";
+import { removeItem, clearCart, calculateTotals } from "../../redux/cartSlice";
 import { useSelector } from "react-redux";
 
 function CartBox() {
@@ -33,10 +33,12 @@ function CartBox() {
   );
   const removeAllAlbums = () => {
     dispatch(clearCart());
+    dispatch(calculateTotals());
   };
 
   const removeMusic = (music) => {
     dispatch(removeItem(music));
+    dispatch(calculateTotals());
   };
 
   return (

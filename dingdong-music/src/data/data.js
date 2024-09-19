@@ -107,6 +107,42 @@ const musics = [
     description:
       "Lonely is your love, I could be the answer to All of your prayers Take me dancing",
   },
+  {
+    id: 13,
+    musicName: "Supernova",
+    artistName: "aespa",
+    musicImgSrc: "aespa.jpg",
+    price: 15000,
+    description:
+      "사건은 다가와 Ah Oh Ay 거세게 커져가 Ah Oh Ay That tick that tick tick bomb That tick that tick tick bomb 감히 건드리지 못할 걸",
+  },
+  {
+    id: 14,
+    musicName: "Give Love",
+    artistName: "akmu",
+    musicImgSrc: "akmu.jpg",
+    price: 15000,
+    description:
+      "Give Love 사랑을 좀 주세요 Give Love 사랑이 모자라요 매일매일 자라는 사랑을 그녀에게 주는데도 받질 않으니  Give Love Give Love Give Love ",
+  },
+  {
+    id: 15,
+    musicName: "12월의 기적",
+    artistName: "exo",
+    musicImgSrc: "exo.jpg",
+    price: 15000,
+    description:
+      "늘 나밖에 몰랐었던 이기적인 내가 yeah 네 맘도 몰라줬던 무심한 내가 이렇게도 달라졌다는 게 나조차 믿기지 않아 네 사랑은 이렇게 계속 날 움직여",
+  },
+  {
+    id: 16,
+    musicName: "Kitsch",
+    artistName: "ive",
+    musicImgSrc: "ive.jpg",
+    price: 15000,
+    description:
+      "우리만의 자유로운 nineteen's kitsch 지금까지 한적 없는 custom fit 올려 대는 나의 feed엔 like it 홀린 듯이 눌러 모두 다 like it 내가 추는 춤을 다들 따라 춰",
+  },
 ];
 
 export default musics;

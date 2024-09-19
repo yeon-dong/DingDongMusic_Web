@@ -35,6 +35,7 @@ export const MusicIMG = styled.img`
   border-radius: 100%;
   margin: 0 auto;
   margin-bottom: 12px;
+  object-fit: cover;
 `;
 
 export const MusicTitle = styled.div`
