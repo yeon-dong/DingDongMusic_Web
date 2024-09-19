@@ -62,16 +62,24 @@ export const MusicListContainer = styled.div`
 
 export const CartInfoContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
-  // background-color: black;
-  // background-color: black;
   border-radius: 12px;
   position: absolute;
   width: 100%;
   height: 120px;
   bottom: 0;
   left: 0;
-  // box-shadow: 0 -2px 4px var(--primary-color2);
   backdrop-filter: blur(2px);
+  animation: slide-up 0.5s;
+
+  @keyframes slide-up {
+    0% {
+      bottom: -120px;
+    }
+
+    100% {
+      bottom: 0;
+    }
+  }
 `;
 
 export const MusicCardContainer = styled.div`
@@ -222,4 +230,16 @@ export const PaymentBtn = styled.div`
   font-weight: bold;
   padding: 12px 0px 0px 25px;
   cursor: pointer;
+`;
+
+export const NoItemMessage = styled.div`
+  width: 100%;
+  height: 200px;
+  color: var(--primary-color2);
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
 `;

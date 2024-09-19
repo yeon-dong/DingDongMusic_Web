@@ -20,6 +20,7 @@ import {
   CartAllMoneyText,
   PaymentBtn,
   CartContainerWrapper,
+  NoItemMessage,
 } from "./CartBox.style";
 import { useDispatch } from "react-redux";
 import { removeItem, clearCart, calculateTotals } from "../../redux/cartSlice";
@@ -44,9 +45,11 @@ function CartBox() {
     <Container>
       <CartHeader>
         <CartHeaderText>장바구니 목록</CartHeaderText>
-        <CartResetBtn onClick={() => removeAllAlbums()}>
-          장바구니 초기화
-        </CartResetBtn>
+        {items.length > 0 && (
+          <CartResetBtn onClick={() => removeAllAlbums()}>
+            장바구니 초기화
+          </CartResetBtn>
+        )}
       </CartHeader>
       <CartContainerWrapper>
         <CartContainer>
@@ -67,15 +70,20 @@ function CartBox() {
                 />
               </MusicCardContainer>
             ))}
+            {items.length === 0 && (
+              <NoItemMessage>장바구니에 노래가 없습니다</NoItemMessage>
+            )}
           </MusicListContainer>
         </CartContainer>
       </CartContainerWrapper>
-      <CartInfoContainer>
-        <CartAmountMainText>장바구니에 담은 노래</CartAmountMainText>
-        <CartAllAmountText>총 {totalAlbums} 개의 노래</CartAllAmountText>
-        <CartAllMoneyText>총 가격: {totalAmount}원</CartAllMoneyText>
-        <PaymentBtn>결제하기</PaymentBtn>
-      </CartInfoContainer>
+      {items.length > 0 && (
+        <CartInfoContainer>
+          <CartAmountMainText>장바구니에 담은 노래</CartAmountMainText>
+          <CartAllAmountText>총 {totalAlbums} 개의 노래</CartAllAmountText>
+          <CartAllMoneyText>총 가격: {totalAmount}원</CartAllMoneyText>
+          <PaymentBtn>결제하기</PaymentBtn>
+        </CartInfoContainer>
+      )}
     </Container>
   );
 }
