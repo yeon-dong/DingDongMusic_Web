@@ -22,7 +22,7 @@ export const ProgressCircle = styled.div`
   ${(props) =>
     props.$isPushed &&
     css`
-      animation: ${moveRight} 5s forwards;
+      animation: ${moveRight} 5s linear forwards;
     `}
 `;
 
