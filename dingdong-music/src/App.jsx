@@ -6,6 +6,7 @@ import PlayBox from "./components/PlayBox/PlayBox";
 import MusicDetail from "./components/MusicDetail/MusicDetail";
 import CartBox from "./components/CartBox/CartBox";
 import SearchBox from "./components/SearchBox/SearchBox";
+import MapBox from "./components/MapBox/MapBox";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/music/:id" element={<MusicDetail />} />
                 <Route path="/cart" element={<CartBox />} />
               </Routes>
+              {/* <MapBox /> */}
             </MainSection>
           </Content>
         </AppContainer>
