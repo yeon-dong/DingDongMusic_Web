@@ -34,6 +34,7 @@ export const SideSection = styled.div`
     bottom: 0;
     left: 0;
     z-index: 20;
+    border-top: 4px solid #22c55e;
   }
 `;
 
