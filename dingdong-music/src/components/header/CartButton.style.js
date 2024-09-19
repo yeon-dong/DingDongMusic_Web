@@ -1,9 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.button`
-  position: absolute;
-  right: 8px;
-  top: 0;
+  position: relative;
   width: 48px;
   height: 48px;
   cursor: pointer;

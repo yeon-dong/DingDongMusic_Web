@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import CartButton from "./CartButton";
-import { Container, SearchIcon } from "./SearchBar.style";
+import { CartButtonWrapper, Container, SearchIcon } from "./SearchBar.style";
 import { useNavigate } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
 
-const SearchBar = () => {
+const SearchBar = ({ inputText, onInputTextChange }) => {
   const navigate = useNavigate();
 
-  const [inputText, setInputText] = useState("");
   const keyword = useDebounce(inputText, 500);
 
   useEffect(() => {
@@ -17,10 +16,6 @@ const SearchBar = () => {
       navigate(`/search/${searchKeyword}`);
     }
   }, [keyword]);
-
-  const handleKeywordChange = useCallback((e) => {
-    setInputText(e.target.value);
-  }, []);
 
   const handleInputClick = useCallback(() => {
     const searchKeyword = keyword.trim().replace(" ", "-");
@@ -32,13 +27,16 @@ const SearchBar = () => {
     <Container>
       <input
         placeholder="어떤 노래를 구매하고 싶으신가요?"
-        onChange={handleKeywordChange}
+        value={inputText}
+        onChange={onInputTextChange}
         onClick={handleInputClick}
       />
       <SearchIcon>
         <img src="/search_icon.svg" />
       </SearchIcon>
-      <CartButton />
+      <CartButtonWrapper>
+        <CartButton />
+      </CartButtonWrapper>
     </Container>
   );
 };

@@ -29,6 +29,10 @@ export const Container = styled.div`
   input::placeholder {
     color: var(--primary-color2);
   }
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
 `;
 
 export const SearchIcon = styled.div`
@@ -41,4 +45,16 @@ export const SearchIcon = styled.div`
   justify-content: center;
   align-items: center;
   color: var(--primary-color2);
+`;
+
+export const CartButtonWrapper = styled.div`
+  position: absolute;
+  right: 8px;
+  top: 0;
+  width: 48px;
+  height: 48px;
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 `;

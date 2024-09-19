@@ -59,20 +59,31 @@ function MainBox() {
         <MainText>인기 아티스트</MainText>
         <MusicContainer>
           <Swiper
-            slidesPerView={6}
-            spaceBetween={0}
+            slidesPerView={3}
             breakpoints={{
-              640: {
-                slidesPerView: 2,
-                spaceBetween: 0,
+              260: {
+                slidesPerView: 3,
               },
-              768: {
+              440: {
                 slidesPerView: 4,
-                spaceBetween: 0,
               },
-              1024: {
+              620: {
+                slidesPerView: 5,
+              },
+              800: {
+                slidesPerView: 3,
+              },
+              1060: {
+                slidesPerView: 4,
+              },
+              1240: {
+                slidesPerView: 5,
+              },
+              1420: {
                 slidesPerView: 6,
-                spaceBetween: 0,
+              },
+              1600: {
+                slidesPerView: 7,
               },
             }}
             autoplay={{
@@ -111,20 +122,31 @@ function MainBox() {
         <AlbumContainer>
           <Swiper
             ref={albumSwiperRef} // ref 추가
-            slidesPerView={6}
-            spaceBetween={0}
+            slidesPerView={3}
             breakpoints={{
-              640: {
-                slidesPerView: 2,
-                spaceBetween: 0,
+              260: {
+                slidesPerView: 3,
               },
-              768: {
+              440: {
                 slidesPerView: 4,
-                spaceBetween: 0,
               },
-              1024: {
+              620: {
+                slidesPerView: 5,
+              },
+              800: {
+                slidesPerView: 3,
+              },
+              1060: {
+                slidesPerView: 4,
+              },
+              1240: {
+                slidesPerView: 5,
+              },
+              1420: {
                 slidesPerView: 6,
-                spaceBetween: 0,
+              },
+              1600: {
+                slidesPerView: 7,
               },
             }}
             autoplay={{

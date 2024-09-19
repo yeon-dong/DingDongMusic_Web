@@ -1,8 +1,8 @@
 import { Container } from "./HomeButton.style";
 
-const HomeButton = () => {
+const HomeButton = ({ onHomeClick }) => {
   return (
-    <Container to="/">
+    <Container onClick={onHomeClick}>
       <img src="/home_icon.svg" alt="Home Icon" />
     </Container>
   );
