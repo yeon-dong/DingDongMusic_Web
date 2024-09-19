@@ -8,10 +8,13 @@ import {
   setPause,
   resetMusic,
 } from "../../redux/playingMusicSlice";
-import { setSelectedIndex } from "../../redux/playlistSlice";
+import { addPlaylist, setSelectedIndex } from "../../redux/playlistSlice";
+import { musics } from "../../data/data";
 
 function PlayBox() {
   const dispatch = useDispatch();
+
+  const [isModal, setIsModal] = useState(false);
 
   //플레이리스트 부분
   const { items, totalAlbums, totalAmount, selectedIndex } = useSelector(
@@ -65,7 +68,8 @@ function PlayBox() {
       </p>
       <button
         onClick={() => {
-          console.log(items);
+          setIsModal(true);
+          console.log(isModal);
         }}
         className="bg-white text-black px-4 py-2 rounded-2xl font-bold hover:bg-gray-200"
       >
@@ -81,7 +85,7 @@ function PlayBox() {
       {items.map((item, i) => (
         <div
           key={i}
-          className={`p-1 rounded-md mb-2 mobile-None cursor-pointer ${
+          className={`p-1 rounded-md mb-2 mobile-None cursor-pointer	 ${
             selectedIndex === i ? "text-green-500" : ""
           }`}
           style={{ background: "var(--primary-color)" }}
@@ -112,9 +116,58 @@ function PlayBox() {
     </div>
   );
 
+  const Modal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+    const randomMusic = musics[Math.floor(Math.random() * musics.length)];
+
+    return (
+      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <div
+          className="bg-white rounded-lg p-6 max-w-sm mx-auto"
+          style={{ background: "var(--primary-color)" }}
+        >
+          <h2 className="text-white text-lg font-bold mb-4">
+            이 노래는 어때요?
+          </h2>
+          <div className="flex flex-col w-30 h-30">
+            <img
+              className="rounded-full"
+              src={`./images/${randomMusic.musicImgSrc}`}
+            ></img>
+            <div className="flex flex-col	p-2 mb-2">
+              <p className="text-white font-semibold mb-1">
+                제목: {randomMusic.musicName}
+              </p>
+              <p style={{ color: "#b3b3b3" }}>
+                아티스트: {randomMusic.artistName}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              dispatch(addPlaylist(randomMusic));
+              handlePlayingMusic(randomMusic);
+              dispatch(setSelectedIndex());
+              setIsModal(false);
+            }}
+            className="bg-black text-white px-4 py-2 rounded-md hover:bg-red-600"
+          >
+            재생하기
+          </button>
+          <button
+            onClick={onClose}
+            className="bg-black text-white px-4 py-2 rounded-md hover:bg-red-600"
+          >
+            닫기
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
-      className="w-full h-full text-white p-4 rounded-md shadow-lg   overflow-y-auto scroll-hide
+      className="w-full h-full text-white p-4 rounded-md shadow-lg  overflow-y-hidden md:overflow-y-auto scroll-hide 
 "
       style={{ background: "var(--primary-color3)" }}
     >
@@ -128,6 +181,7 @@ function PlayBox() {
         </div>
       </div>
       {items.length > 0 ? playlistWithItem() : playlistEmpty()}
+      <Modal isOpen={isModal} onClose={() => setIsModal(false)} />
 
       <div className="h-28 mobile-None"></div>
       {selectedSong.musicName === "" ? (
@@ -158,7 +212,7 @@ function PlayBox() {
             />
           </div>
 
-          <div className="text-base text-white  ml-4 mb-8">
+          <div className="text-base text-white  ml-4 mb-4 md:mb-8">
             <h3>{selectedSong.musicName}</h3>
             <p style={{ color: "#b3b3b3" }}>{selectedSong.artistName}</p>
           </div>
