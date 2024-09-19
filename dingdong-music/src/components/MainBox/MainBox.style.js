@@ -159,6 +159,7 @@ export const AlbumContainer = styled.div`
 `;
 
 export const AlbumImg = styled.img`
+  cursor: pointer;
   width: 100%;
   aspect-ratio: 1;
   border-radius: 12px;

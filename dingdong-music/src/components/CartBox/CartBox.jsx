@@ -23,12 +23,14 @@ import {
   PaymentBtn,
 } from "./CartBox.style";
 import { useDispatch } from "react-redux";
-import { removeItem, clearCart, calculateTotals } from "../../redux/cartSlice";
+import { removeItem, calculateTotals } from "../../redux/cartSlice";
 import { useSelector } from "react-redux";
 import DelAllPopUp from "../DelAllPopUp/DelAllPopUp";
+import PaymentPopUp from "../PaymentPopUp/PaymentPopUp";
 
 function CartBox() {
   const [isDelPopUpOpen, setDelPopUpOpen] = useState(false);
+  const [isPaymentPopUpOpen, setPaymentPopUpOpen] = useState(false);
   const dispatch = useDispatch();
   const { items, totalAlbums, totalAmount } = useSelector(
     (state) => state.cart
@@ -45,6 +47,14 @@ function CartBox() {
 
   const delPopUpClose = () => {
     setDelPopUpOpen(false);
+  };
+
+  const PaymentPopUpOpen = () => {
+    setPaymentPopUpOpen(true);
+  };
+
+  const PaymentPopUpClose = () => {
+    setPaymentPopUpOpen(false);
   };
 
   return (
@@ -82,11 +92,15 @@ function CartBox() {
             <CartAmountMainText>장바구니에 담은 노래</CartAmountMainText>
             <CartAllAmountText>총 {totalAlbums} 개의 노래</CartAllAmountText>
             <CartAllMoneyText>총 가격: {totalAmount}원</CartAllMoneyText>
-            <PaymentBtn>결제하기</PaymentBtn>
+            <PaymentBtn onClick={() => PaymentPopUpOpen()}>결제하기</PaymentBtn>
           </CartInfoContainer>
         </CartContainer>
       </Container>
       <DelAllPopUp isOpen={isDelPopUpOpen} onClose={delPopUpClose} />
+      <PaymentPopUp
+        isOpen={isPaymentPopUpOpen}
+        onClose={PaymentPopUpClose}
+      ></PaymentPopUp>
     </>
   );
 }

@@ -10,7 +10,6 @@ import {
 } from "./DelAllPopUp.style";
 import { useDispatch } from "react-redux";
 import { clearCart, calculateTotals } from "../../redux/cartSlice";
-import { useSelector } from "react-redux";
 
 function DelAllPopUp({ isOpen, onClose }) {
   const dispatch = useDispatch();
