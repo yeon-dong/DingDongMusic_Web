@@ -8,7 +8,11 @@ import {
   setPause,
   resetMusic,
 } from "../../redux/playingMusicSlice";
-import { addPlaylist, setSelectedIndex } from "../../redux/playlistSlice";
+import {
+  addPlaylist,
+  setSelectedIndex,
+  removePlaylist,
+} from "../../redux/playlistSlice";
 import { musics } from "../../data/data";
 
 function PlayBox() {
@@ -110,6 +114,7 @@ function PlayBox() {
                 {item.artistName}
               </p>
             </div>
+            <button onClick={() => dispatch(removePlaylist(i))}>119</button>
           </div>
         </div>
       ))}
@@ -129,11 +134,13 @@ function PlayBox() {
           <h2 className="text-white text-lg font-bold mb-4">
             이 노래는 어때요?
           </h2>
-          <div className="flex flex-col w-30 h-30">
-            <img
-              className="rounded-full"
-              src={`/images/${randomMusic.musicImgSrc}`}
-            ></img>
+          <div className="flex flex-col">
+            <div className="w-[300px] h-[300px]">
+              <img
+                className="rounded-full w-full h-full object-cover"
+                src={`/images/${randomMusic.musicImgSrc}`}
+              ></img>
+            </div>
             <div className="flex flex-col	p-2 mb-2">
               <p className="text-white font-semibold mb-1">
                 제목: {randomMusic.musicName}

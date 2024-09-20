@@ -15,16 +15,14 @@ const playlistSlice = createSlice({
       state.items.push({ ...action.payload, amount: 1 });
     },
     removePlaylist: (state, action) => {
-      const item = state.items.find((item) => item.id === action.payload);
-      if (item) {
-        if (item.amount > 1) {
-          item.amount -= 1;
-        } else {
-          state.items = state.items.filter(
-            (item) => item.id !== action.payload
-          );
-        }
+      if (
+        action.payload === state.selectedIndex &&
+        state.selectedIndex + 1 === state.items.length
+      ) {
+        let temp = action.payload;
+        state.selectedIndex = temp - 1;
       }
+      state.items.splice(action.payload, 1);
     },
     calculateTotals: (state) => {
       let totalAlbums = 0;
