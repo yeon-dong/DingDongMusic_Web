@@ -20,7 +20,7 @@ const CartButton = ({ color }) => {
           alt="Cart Icon"
         />
       </CartIcon>
-      <Badge>{totalAlbums}</Badge>
+      {totalAlbums > 0 && <Badge>{totalAlbums}</Badge>}
     </Container>
   );
 };
