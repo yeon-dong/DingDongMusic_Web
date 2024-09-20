@@ -29,6 +29,7 @@ export const PopUpContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
 
 export const PopUpTitle = styled.div`
@@ -70,4 +71,31 @@ export const PopUpInputPW = styled.input`
   border: 2px solid black;
   border-radius: 10px;
   padding: 4px;
+`;
+
+export const LoginBtn = styled.button`
+  color: white;
+  background-color: var(--primary-color);
+  width: 200px;
+  height: 40px;
+  font-size: 18px;
+  border: 2px solid black;
+  border-radius: 12px;
+  text-align: center;
+  padding: 4px;
+  margin-top: 32px;
+  &:hover {
+    background-color: var(--primary-color2);
+    color: black;
+    font-weight: bold;
+  }
+`;
+
+export const CloseBtn = styled.img`
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 20px;
 `;
