@@ -20,19 +20,21 @@ import {
   FriendListItem,
   FriendName,
   FriendActions,
-  FriendActionButton,
+  FriendModifyButton,
+  FriendDeleteButton,
   ModalOverlay,
   ModalContent,
   CloseButton,
   AddFriendInput,
+  SearchPlaceName,
+  SearchDetailAddress,
 } from "./MapBox.style";
-
 
 function MapBox() {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
-  const [addressResults, setAddressResults] = useState([]); // 검색 결과를 저장할 상태
-  const [searchInput, setSearchInput] = useState(""); // 검색창 입력값 상태
+  const [addressResults, setAddressResults] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
   const [friends, setFriends] = useState([
     { id: 1, friendName: "friend1", latitude: 37.4855, longitude: 126.8842 },
     { id: 2, friendName: "friend2", latitude: 37.488, longitude: 126.877 },
@@ -45,145 +47,74 @@ function MapBox() {
     { id: 9, friendName: "friend9", latitude: 37.484, longitude: 126.872 },
     { id: 10, friendName: "friend10", latitude: 37.4799, longitude: 126.883 },
   ]);
-
-  const [friendMarkers, setFriendMarkers] = useState([]); // 친구들의 마커 상태
-  const [showModal, setShowModal] = useState(false); // 친구 추가 모달 표시 여부
-  const [showEditModal, setShowEditModal] = useState(false); // 친구 수정 모달 표시 여부
+  const [friendMarkers, setFriendMarkers] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [newFriend, setNewFriend] = useState({
     friendName: "",
     latitude: null,
     longitude: null,
   });
-  const [editFriend, setEditFriend] = useState({
-    id: null,
-    friendName: "",
-  }); // 수정할 친구 정보
-  const mapkey= import.meta.env.VITE_KAKAOMAP_API_KEY;
+  const [editFriend, setEditFriend] = useState({ id: null, friendName: "" });
+  const mapkey = import.meta.env.VITE_KAKAOMAP_API_KEY;
 
-  const mapRef = useRef(null); // map 객체를 저장하기 위한 ref
-  const markerRef = useRef(null); // 클릭한 위치에 표시될 마커
-  const searchMarkersRef = useRef([]); // 검색 결과 마커들을 저장하기 위한 ref
-  const activeOverlayRef = useRef(null); // 현재 활성화된 오버레이를 저장할 ref
-  const geocoder = useRef(null); // Geocoder 객체를 저장할 ref
+  const mapRef = useRef(null);
+  const searchMarkersRef = useRef([]);
+  const activeOverlayRef = useRef(null);
+  const geocoder = useRef(null);
 
   useEffect(() => {
-    const container = document.querySelector("#map");
+    const script = document.createElement("script");
+    script.async = true;
+    script.type = "text/javascript";
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${mapkey}&libraries=services`;
+    document.head.appendChild(script);
 
-    if (!container) return; // container가 없는 경우 반환
-
-    if (!("geolocation" in navigator)) {
-      alert("Geolocation is not available");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setLatitude(pos.coords.latitude);
-        setLongitude(pos.coords.longitude);
-
-        if (window.kakao && window.kakao.maps) {
-          console.log("if");
-          initMap(container, pos.coords.latitude, pos.coords.longitude);
-        } else {
-          console.log("else");
-          const script = document.createElement("script");
-          script.onload = () =>
-            kakao.maps.load(() =>
-              initMap(container, pos.coords.latitude, pos.coords.longitude)
-            );
-          script.src =
-            `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${mapkey}&libraries=services,places`; // services, places 라이브러리 추가
-          document.head.appendChild(script);
+    script.addEventListener("load", () => {
+      window.kakao.maps.load(() => {
+        if (!("geolocation" in navigator)) {
+          alert("Geolocation is not available");
+          return;
         }
-      },
-      (err) => {
-        alert(err.message);
-      }
-    );
-  }, []); // 빈 배열로 한 번만 실행
 
-  const initMap = (container, lat, lng) => {
-    console.log("init");
-    if (!window.kakao || !window.kakao.maps) {
-      console.error("Kakao Maps API is not loaded.");
-      return;
-    }
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            setLatitude(pos.coords.latitude);
+            setLongitude(pos.coords.longitude);
 
-    const options = {
-      center: new kakao.maps.LatLng(lat, lng),
-      level: 3,
-    };
+            const container = document.getElementById("map");
+            const options = {
+              center: new window.kakao.maps.LatLng(
+                pos.coords.latitude,
+                pos.coords.longitude
+              ),
+              level: 3,
+            };
+            const map = new window.kakao.maps.Map(container, options);
+            mapRef.current = map;
 
-    const map = new kakao.maps.Map(container, options);
-    mapRef.current = map; // ref에 저장
-
-    // Geocoder 객체 생성
-    geocoder.current = new kakao.maps.services.Geocoder();
-
-    // 지도 클릭 시 클릭한 위치에 마커 표시
-    kakao.maps.event.addListener(map, "click", function (mouseEvent) {
-      if (mouseEvent.target && mouseEvent.target.className === "wrap") return;
-
-      const latlng = mouseEvent.latLng;
-
-      if (markerRef.current) {
-        markerRef.current.setMap(null);
-      }
-
-      const clickMarker = createMarker(latlng, map);
-      markerRef.current = clickMarker;
-
-      geocoder.current.coord2Address(
-        latlng.getLng(),
-        latlng.getLat(),
-        function (result, status) {
-          if (status === kakao.maps.services.Status.OK) {
-            const placeName = result[0].road_address
-              ? result[0].road_address.building_name || "Unknown Place"
-              : "Unknown Place";
-            const address = result[0].road_address
-              ? result[0].road_address.address_name
-              : result[0].address.address_name;
-
-            const overlayContent = createOverlayContent(
-              placeName,
-              address,
-              latlng.getLat(),
-              latlng.getLng(),
-              "add"
-            );
-
-            const overlay = new kakao.maps.CustomOverlay({
-              content: overlayContent,
-              map: null,
-              position: clickMarker.getPosition(),
-              zIndex: 100,
-            });
-
-            kakao.maps.event.addListener(clickMarker, "click", function () {
-              if (activeOverlayRef.current) {
-                activeOverlayRef.current.setMap(null);
-              }
-              overlay.setMap(map);
-              activeOverlayRef.current = overlay;
-            });
+            geocoder.current = new window.kakao.maps.services.Geocoder();
+            updateFriendMarkers();
+          },
+          (err) => {
+            alert(err.message);
           }
-        }
-      );
+        );
+      });
     });
 
-    updateFriendMarkers(); // 친구 마커 초기화
-  };
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
-  // 친구 목록이 변경될 때마다 지도 마커 업데이트
   useEffect(() => {
     if (mapRef.current) {
       updateFriendMarkers();
     }
-  }, [friends]); // friends 상태가 변경될 때마다 실행
+  }, [friends]);
 
   const updateFriendMarkers = () => {
-    // 기존 친구 마커 제거
     friendMarkers.forEach((marker) => marker.setMap(null));
 
     const newMarkers = friends.map((friend) => {
@@ -191,24 +122,29 @@ function MapBox() {
         friend.latitude,
         friend.longitude
       );
-      const marker = createMarker(markerPosition, mapRef.current);
+      var firendMarkerImg = new kakao.maps.MarkerImage(
+        `/images/friend.svg`,
+        new kakao.maps.Size(28, 28),
+        { offset: new kakao.maps.Point(27, 69) }
+      );
+      const marker = createMarker(
+        markerPosition,
+        mapRef.current,
+        firendMarkerImg
+      );
 
-      // 마커 클릭 시 오버레이 생성
-      kakao.maps.event.addListener(marker, "click", function () {
+      kakao.maps.event.addListener(marker, "click", () => {
         if (activeOverlayRef.current) {
           activeOverlayRef.current.setMap(null);
         }
-
-        // 친구의 좌표로 주소 변환
         geocoder.current.coord2Address(
           friend.longitude,
           friend.latitude,
-          function (result, status) {
+          (result, status) => {
             if (status === kakao.maps.services.Status.OK) {
               const address = result[0].road_address
                 ? result[0].road_address.address_name
                 : result[0].address.address_name;
-
               const overlayContent = createOverlayContent(
                 friend.friendName,
                 address,
@@ -216,16 +152,14 @@ function MapBox() {
                 friend.longitude,
                 "edit"
               );
-
               const overlay = new kakao.maps.CustomOverlay({
                 content: overlayContent,
                 map: null,
                 position: marker.getPosition(),
                 zIndex: 100,
               });
-
               overlay.setMap(mapRef.current);
-              activeOverlayRef.current = overlay; // 현재 활성화된 오버레이 업데이트
+              activeOverlayRef.current = overlay;
             }
           }
         );
@@ -234,13 +168,14 @@ function MapBox() {
       return marker;
     });
 
-    setFriendMarkers(newMarkers); // 새 친구 마커로 상태 업데이트
+    setFriendMarkers(newMarkers);
   };
 
-  const createMarker = (position, map) => {
+  const createMarker = (position, map, img) => {
     return new kakao.maps.Marker({
       position,
       map,
+      image: img,
       clickable: true,
       zIndex: 0,
     });
@@ -250,24 +185,21 @@ function MapBox() {
     const overlayContent = document.createElement("div");
     overlayContent.className = "wrap";
     overlayContent.style.cssText =
-      "position: relative; width: 250px; border: 1px solid #ccc; background-color: white; box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1); border-radius: 10px; overflow: hidden; pointer-events: auto; z-index: 100;"; // z-index를 더 높게 설정
+      "position: relative; width: 250px; border: 1px solid #ccc; background-color: white; border-radius: 10px; overflow: hidden; pointer-events: auto; z-index: 99999;"; // z-index를 더 높게 설정
     overlayContent.innerHTML = `
       <div class="info" style="display: flex; flex-direction: row;">
-        <div class="img" style="flex: 1; overflow: hidden;">
-          <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
         <div class="desc" style="flex: 2; padding: 10px; font-size: 12px; line-height: 1.5;">
-          <div class="title" style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">${title}</div>
-          <div class="address" style="margin-bottom: 5px;">${address}</div>
-          <div class="actions" style="margin-top: 10px;">
+          <div class="title" style="text-align:center; font-weight: bold; font-size: 16px; margin-bottom: 5px;">${title}</div>
+          <div class="address" style="text-align:center; margin-bottom: 5px;">${address}</div>
+          <div class="actions" style="margin-top: 10px; display: flex; justify-content: center; align-items: center;">
             ${
               type === "edit"
                 ? `
-              <button class="edit" style="margin-right: 5px;">수정</button>
-              <button class="delete">삭제</button>
+              <button class="edit" style="margin-right: 16px; background-color: rgb(96, 165, 250); color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer">수정</button>
+              <button class="delete" style="background-color: rgb(239, 68, 68); color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer">삭제</button>
             `
                 : `
-              <button class="add">추가</button>
+              <button class="add" style="background-color: rgb(96, 165, 250); color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer">추가</button>
             `
             }
           </div>
@@ -283,9 +215,22 @@ function MapBox() {
       }
     };
 
-    // 수정 버튼 핸들러
+    overlayContent.querySelector(".close").onclick = () => {
+      if (activeOverlayRef.current) {
+        activeOverlayRef.current.setMap(null);
+      }
+    };
+
     const editBtn = overlayContent.querySelector(".edit");
+
     if (editBtn) {
+      editBtn.onmouseover = function() {
+        this.style.backgroundColor = 'rgb(37, 99, 235)';
+      };
+      editBtn.onmouseout = function() {
+          this.style.backgroundColor = 'rgb(96, 165, 250)';
+      };
+  
       editBtn.onclick = () => {
         setEditFriend({
           id: friends.find((f) => f.latitude === lat && f.longitude === lng).id,
@@ -296,21 +241,32 @@ function MapBox() {
       };
     }
 
-    // 삭제 버튼 핸들러
     const deleteBtn = overlayContent.querySelector(".delete");
     if (deleteBtn) {
+      deleteBtn.onmouseover = function() {
+        this.style.backgroundColor = 'rgb(220, 38, 38)';
+      };
+      deleteBtn.onmouseout = function() {
+          this.style.backgroundColor = 'rgb(239, 68, 68)';
+      };
       deleteBtn.onclick = () => {
         handleDeleteFriend(lat, lng);
         activeOverlayRef.current.setMap(null);
       };
     }
 
-    // 추가 버튼 핸들러
     const addBtn = overlayContent.querySelector(".add");
+
     if (addBtn) {
+      addBtn.onmouseover = function() {
+        this.style.backgroundColor = 'rgb(37, 99, 235)';
+      };
+      addBtn.onmouseout = function() {
+          this.style.backgroundColor = 'rgb(96, 165, 250)';
+      };
       addBtn.onclick = () => {
         setNewFriend({ friendName: "", latitude: lat, longitude: lng });
-        setShowModal(true); // 모달 표시
+        setShowModal(true);
         activeOverlayRef.current.setMap(null);
       };
     }
@@ -318,21 +274,18 @@ function MapBox() {
     return overlayContent;
   };
 
-  // 친구 추가 처리
   const handleAddFriend = () => {
     if (newFriend.friendName && newFriend.latitude && newFriend.longitude) {
       const newId = Math.max(...friends.map((friend) => friend.id)) + 1;
 
-      // 주소 조회
       geocoder.current.coord2Address(
         newFriend.longitude,
         newFriend.latitude,
-        function (result, status) {
+        (result, status) => {
           if (status === kakao.maps.services.Status.OK) {
             const address = result[0].road_address
               ? result[0].road_address.address_name
               : result[0].address.address_name;
-
             const updatedFriends = [
               ...friends,
               { ...newFriend, id: newId, address },
@@ -343,11 +296,10 @@ function MapBox() {
       );
 
       setShowModal(false);
-      setNewFriend({ friendName: "", latitude: null, longitude: null }); // 초기화
+      setNewFriend({ friendName: "", latitude: null, longitude: null });
     }
   };
 
-  // 친구 수정 처리
   const handleEditFriend = () => {
     if (editFriend.friendName && editFriend.id !== null) {
       const updatedFriends = friends.map((friend) =>
@@ -357,22 +309,20 @@ function MapBox() {
       );
       setFriends(updatedFriends);
       setShowEditModal(false);
-      setEditFriend({ id: null, friendName: "" }); // 초기화
+      setEditFriend({ id: null, friendName: "" });
     }
   };
 
-  // 검색 기능 구현
   const handleSearch = () => {
     if (!window.kakao || !window.kakao.maps) {
       console.error("Kakao Maps API is not loaded.");
       return;
     }
 
-    const ps = new kakao.maps.services.Places(); // 장소 검색 객체 생성
-    ps.keywordSearch(searchInput, placesSearchCB); // 키워드로 장소 검색
+    const ps = new kakao.maps.services.Places();
+    ps.keywordSearch(searchInput, placesSearchCB);
   };
 
-  // 장소 검색 완료 시 호출되는 콜백함수
   const placesSearchCB = (data, status) => {
     if (status === kakao.maps.services.Status.OK) {
       const sortedData = data.sort((a, b) => {
@@ -386,8 +336,8 @@ function MapBox() {
       });
 
       setAddressResults(sortedData);
-
       searchMarkersRef.current.forEach((marker) => marker.setMap(null));
+
       searchMarkersRef.current = [];
 
       if (sortedData.length > 0) {
@@ -401,7 +351,16 @@ function MapBox() {
 
       sortedData.forEach((result) => {
         const markerPosition = new kakao.maps.LatLng(result.y, result.x);
-        const marker = createMarker(markerPosition, mapRef.current);
+        const searchMarkerImg = new kakao.maps.MarkerImage(
+          `/images/search.svg`,
+          new kakao.maps.Size(28, 28),
+          { offset: new kakao.maps.Point(27, 69) }
+        );
+        const marker = createMarker(
+          markerPosition,
+          mapRef.current,
+          searchMarkerImg
+        );
 
         const overlayContent = createOverlayContent(
           result.place_name,
@@ -418,7 +377,7 @@ function MapBox() {
           zIndex: 100,
         });
 
-        kakao.maps.event.addListener(marker, "click", function () {
+        kakao.maps.event.addListener(marker, "click", () => {
           if (activeOverlayRef.current) {
             activeOverlayRef.current.setMap(null);
           }
@@ -433,7 +392,6 @@ function MapBox() {
     }
   };
 
-  // 검색 결과 목록에서 항목 클릭 시 지도에 마커 표시 및 중심 이동
   const handleListItemClick = (lat, lng, name, address) => {
     const markerPosition = new kakao.maps.LatLng(lat, lng);
     mapRef.current.setCenter(markerPosition);
@@ -443,7 +401,7 @@ function MapBox() {
     const updatedFriends = friends.filter(
       (friend) => friend.latitude !== latitude && friend.longitude !== longitude
     );
-    setFriends(updatedFriends); // 친구 목록에서 삭제
+    setFriends(updatedFriends);
   };
 
   return (
@@ -478,10 +436,10 @@ function MapBox() {
                     )
                   }
                 >
-                  <div style={{ fontWeight: "bold", fontSize: "14px" }}>
+                  <SearchPlaceName>
                     {result.place_name}
-                  </div>
-                  <div>{result.address_name}</div>
+                  </SearchPlaceName>
+                  <SearchDetailAddress>{result.address_name}</SearchDetailAddress>
                 </SearchResultItem>
               ))}
             </SearchResultsList>
@@ -504,9 +462,9 @@ function MapBox() {
                 >
                   <FriendName>{friend.friendName}</FriendName>
                   <FriendActions>
-                    <FriendActionButton
+                    <FriendModifyButton
                       onClick={(e) => {
-                        e.stopPropagation(); // 클릭 이벤트 전파 방지
+                        e.stopPropagation();
                         setEditFriend({
                           id: friend.id,
                           friendName: friend.friendName,
@@ -515,15 +473,15 @@ function MapBox() {
                       }}
                     >
                       수정
-                    </FriendActionButton>
-                    <FriendActionButton
+                    </FriendModifyButton>
+                    <FriendDeleteButton
                       onClick={(e) => {
-                        e.stopPropagation(); // 클릭 이벤트 전파 방지
+                        e.stopPropagation();
                         handleDeleteFriend(friend.latitude, friend.longitude);
                       }}
                     >
                       삭제
-                    </FriendActionButton>
+                    </FriendDeleteButton>
                   </FriendActions>
                 </FriendListItem>
               ))}
@@ -546,9 +504,9 @@ function MapBox() {
               }
               placeholder="친구 이름 입력"
             />
-            <FriendActionButton onClick={handleAddFriend}>
+            <FriendModifyButton onClick={handleAddFriend}>
               추가
-            </FriendActionButton>
+            </FriendModifyButton>
           </ModalContent>
         </ModalOverlay>
       )}
@@ -567,9 +525,9 @@ function MapBox() {
               }
               placeholder="새 친구 이름 입력"
             />
-            <FriendActionButton onClick={handleEditFriend}>
+            <FriendModifyButton onClick={handleEditFriend}>
               수정
-            </FriendActionButton>
+            </FriendModifyButton>
           </ModalContent>
         </ModalOverlay>
       )}

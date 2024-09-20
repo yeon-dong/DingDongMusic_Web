@@ -25,8 +25,8 @@ function App() {
                 <Route path="/search/:keyword" element={<SearchBox />} />
                 <Route path="/music/:id" element={<MusicDetail />} />
                 <Route path="/cart" element={<CartBox />} />
+                <Route path="/map" element={<MapBox />} />
               </Routes>
-              {/* <MapBox /> */}
             </MainSection>
           </Content>
         </AppContainer>
