@@ -8,10 +8,13 @@ import {
   setPause,
   resetMusic,
 } from "../../redux/playingMusicSlice";
-import { setSelectedIndex } from "../../redux/playlistSlice";
+import { addPlaylist, setSelectedIndex } from "../../redux/playlistSlice";
+import { musics } from "../../data/data";
 
 function PlayBox() {
   const dispatch = useDispatch();
+
+  const [isModal, setIsModal] = useState(false);
 
   //플레이리스트 부분
   const { items, totalAlbums, totalAmount, selectedIndex } = useSelector(
@@ -65,7 +68,8 @@ function PlayBox() {
       </p>
       <button
         onClick={() => {
-          console.log(items);
+          setIsModal(true);
+          console.log(isModal);
         }}
         className="bg-white text-black px-4 py-2 rounded-2xl font-bold hover:bg-gray-200"
       >
@@ -81,7 +85,7 @@ function PlayBox() {
       {items.map((item, i) => (
         <div
           key={i}
-          className={`p-1 rounded-md mb-2 mobile-None ${
+          className={`p-1 rounded-md mb-2 mobile-None cursor-pointer	 ${
             selectedIndex === i ? "text-green-500" : ""
           }`}
           style={{ background: "var(--primary-color)" }}
@@ -97,7 +101,7 @@ function PlayBox() {
             <div className="w-28 h-14">
               <img
                 className="w-14 h-14 rounded-full"
-                src={`./images/${item.musicImgSrc}`}
+                src={`/images/${item.musicImgSrc}`}
               ></img>
             </div>
             <div className="flex-col items-center py-1">
@@ -112,28 +116,78 @@ function PlayBox() {
     </div>
   );
 
+  const Modal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+    const randomMusic = musics[Math.floor(Math.random() * musics.length)];
+
+    return (
+      <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+        <div
+          className="bg-white rounded-lg p-6 max-w-sm mx-auto"
+          style={{ background: "var(--primary-color)" }}
+        >
+          <h2 className="text-white text-lg font-bold mb-4">
+            이 노래는 어때요?
+          </h2>
+          <div className="flex flex-col w-30 h-30">
+            <img
+              className="rounded-full"
+              src={`/images/${randomMusic.musicImgSrc}`}
+            ></img>
+            <div className="flex flex-col	p-2 mb-2">
+              <p className="text-white font-semibold mb-1">
+                제목: {randomMusic.musicName}
+              </p>
+              <p style={{ color: "#b3b3b3" }}>
+                아티스트: {randomMusic.artistName}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              dispatch(addPlaylist(randomMusic));
+              handlePlayingMusic(randomMusic);
+              dispatch(setSelectedIndex());
+              setIsModal(false);
+            }}
+            className="bg-black text-white px-4 py-2 rounded-md hover:bg-red-600"
+          >
+            재생하기
+          </button>
+          <button
+            onClick={onClose}
+            className="bg-black text-white px-4 py-2 rounded-md hover:bg-red-600"
+          >
+            닫기
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div
-      className="w-full h-full text-white p-4 rounded-md shadow-lg   overflow-y-auto scroll-hide
+      className="w-full h-full text-white p-4 rounded-md shadow-lg  overflow-y-hidden md:overflow-y-auto scroll-hide 
 "
       style={{ background: "var(--primary-color3)" }}
     >
       <div className="flex items-center justify-between mb-8 mobile-None">
         <div className="flex gap-3">
-          <img src="./images/book_icon.svg" />
+          <img src="/images/book_icon.svg" />
           <h2 className="text-lg font-bold">내 라이브러리</h2>
         </div>
         <div>
-          <img src="./images/library_submenu.svg" alt="" />
+          <img src="/images/library_submenu.svg" alt="" />
         </div>
       </div>
       {items.length > 0 ? playlistWithItem() : playlistEmpty()}
+      <Modal isOpen={isModal} onClose={() => setIsModal(false)} />
 
       <div className="h-28 mobile-None"></div>
       {selectedSong.musicName === "" ? (
         <div className="h-60 flex flex-col p-4 pt-28 rounded-md relative mobile-On bg-custom-black">
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mobile-None">
-            <img src="./images/playlist_logo.svg" />
+            <img src="/images/playlist_logo.svg" />
           </div>
 
           <p className="text-base text-white font-bold ml-4 mb-10">
@@ -145,7 +199,7 @@ function PlayBox() {
               <ProgressCircle $isPushed={selectedSong.isPlaying} />
             </ProgressBar>
             <button className="mx-auto">
-              <img src="./images/playbutton.svg"></img>
+              <img src="/images/playbutton.svg"></img>
             </button>
           </div>
         </div>
@@ -154,11 +208,11 @@ function PlayBox() {
           <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mobile-None">
             <img
               className="w-40 h-40 rounded-full"
-              src={`./images/${selectedSong.musicImgSrc}`}
+              src={`/images/${selectedSong.musicImgSrc}`}
             />
           </div>
 
-          <div className="text-base text-white  ml-4 mb-8">
+          <div className="text-base text-white  ml-4 mb-4 md:mb-8">
             <h3>{selectedSong.musicName}</h3>
             <p style={{ color: "#b3b3b3" }}>{selectedSong.artistName}</p>
           </div>
@@ -178,9 +232,9 @@ function PlayBox() {
               }}
             >
               {selectedSong.isPlaying ? (
-                <img src="./images/pausebutton.svg"></img>
+                <img src="/images/pausebutton.svg"></img>
               ) : (
-                <img src="./images/playbutton.svg"></img>
+                <img src="/images/playbutton.svg"></img>
               )}
             </button>
           </div>

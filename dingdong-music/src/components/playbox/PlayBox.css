@@ -2,6 +2,7 @@
   .mobile-On {
     padding: 0 !important;
     background: none;
+    overflow-y: hidden !important;
   }
   .mobile-None {
     display: none !important;
