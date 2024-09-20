@@ -71,11 +71,7 @@ function Header() {
           />
         </SearchBox>
         <UserBox>
-          {isLoggedIn ? (
-            <UserButton />
-          ) : (
-            <LoginButton onClick={() => openPopUp()} />
-          )}
+          {isLoggedIn ? <UserButton /> : <LoginButton onClick={openPopUp} />}
         </UserBox>
         <MobileMenuBox>
           <MobileSearchButton
@@ -88,13 +84,15 @@ function Header() {
           {isLoggedIn ? (
             <UserButton />
           ) : (
-            <MobileLoginButton onClick={handleLogin}>
+            <MobileLoginButton onClick={openPopUp}>
               <img src="/user_icon.svg" alt="Mobile Login Icon" />
             </MobileLoginButton>
           )}
         </MobileMenuBox>
       </Container>
-      {/* <LoginPopUp /> */}
+      {isPopUpOpen && (
+        <LoginPopUp popupClose={closePopUp} login={handleLogin} />
+      )}
     </>
   );
 }
