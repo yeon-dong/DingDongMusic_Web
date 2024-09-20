@@ -94,7 +94,7 @@ function Header() {
           )}
         </MobileMenuBox>
       </Container>
-      <LoginPopUp />
+      {/* <LoginPopUp /> */}
     </>
   );
 }
