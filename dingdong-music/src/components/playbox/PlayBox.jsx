@@ -3,15 +3,14 @@ import { ProgressBar, ProgressCircle } from "./PlayBox.style";
 import "./PlayBox.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addPlaylist,
+  setSelectedIndex,
+  removePlaylist,
   setPlayingMusic,
   setIsPlaying,
   setPause,
   resetMusic,
-} from "../../redux/playingMusicSlice";
-import {
-  addPlaylist,
-  setSelectedIndex,
-  removePlaylist,
+  removePlaylistAndReset,
 } from "../../redux/playlistSlice";
 import { musics } from "../../data/data";
 
@@ -26,7 +25,7 @@ function PlayBox() {
   );
 
   //현재 재생 음악
-  const selectedSong = useSelector((state) => state.playingMusic);
+  const selectedSong = useSelector((state) => state.playlist.selectedItem);
 
   // 플레이리스트 하단 갱신 참조용
   const scrollContainerRef = useRef(null);
@@ -49,6 +48,11 @@ function PlayBox() {
       scrollContainerRef.current.scrollTop = scrollAmount;
     }
   }, [selectedIndex]);
+  
+  // useEffect(() => {
+  //   console.log("현재 실행중인 : ")
+  //    console.log(selectedSong);
+  // },[selectedSong])
 
   const handleAnimationEnd = () => {
     if (selectedIndex + 1 < items.length) {
@@ -101,7 +105,7 @@ function PlayBox() {
               : dispatch(setIsPlaying());
           }}
         >
-          <div className="flex">
+          <div className="flex group">
             <div className="w-28 h-14">
               <img
                 className="w-14 h-14 rounded-full"
@@ -114,7 +118,12 @@ function PlayBox() {
                 {item.artistName}
               </p>
             </div>
-            <button onClick={() => dispatch(removePlaylist(i))}>119</button>
+            <button className="ml-auto mr-2 hover:block opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:block" onClick={(event) => {
+              event.stopPropagation();
+              {selectedIndex === i ? dispatch(removePlaylistAndReset(i)) :  dispatch(removePlaylist(i))}              
+              }}>
+              <img src="/images/deletebutton.svg" alt="" />
+            </button>
           </div>
         </div>
       ))}
@@ -150,6 +159,8 @@ function PlayBox() {
               </p>
             </div>
           </div>
+          <div className="flex gap-1 ">
+
           <button
             onClick={() => {
               dispatch(addPlaylist(randomMusic));
@@ -158,15 +169,16 @@ function PlayBox() {
               setIsModal(false);
             }}
             className="bg-black text-white px-4 py-2 rounded-md hover:bg-red-600"
-          >
+            >
             재생하기
           </button>
           <button
             onClick={onClose}
             className="bg-black text-white px-4 py-2 rounded-md hover:bg-red-600"
-          >
+            >
             닫기
           </button>
+            </div>
         </div>
       </div>
     );
@@ -183,13 +195,14 @@ function PlayBox() {
           <img src="/images/book_icon.svg" />
           <h2 className="text-lg font-bold">내 라이브러리</h2>
         </div>
-        <div>
+        <div className="cursor-pointer" onClick={() => {setIsModal(true)}}>
           <img src="/images/library_submenu.svg" alt="" />
         </div>
       </div>
       {items.length > 0 ? playlistWithItem() : playlistEmpty()}
       <Modal isOpen={isModal} onClose={() => setIsModal(false)} />
 
+      {/* 현재 실행 중인 음악 */}
       <div className="h-28 mobile-None"></div>
       {selectedSong.musicName === "" ? (
         <div className="h-60 flex flex-col p-4 pt-28 rounded-md relative mobile-On bg-custom-black">
