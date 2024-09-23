@@ -157,6 +157,7 @@ function MapBox() {
                 map: null,
                 position: marker.getPosition(),
                 zIndex: 100,
+                yAnchor: 1,
               });
               overlay.setMap(mapRef.current);
               activeOverlayRef.current = overlay;
@@ -267,7 +268,6 @@ function MapBox() {
       addBtn.onclick = () => {
         setNewFriend({ friendName: "", latitude: lat, longitude: lng });
         setShowModal(true);
-        activeOverlayRef.current.setMap(null);
       };
     }
 
@@ -294,6 +294,10 @@ function MapBox() {
           }
         }
       );
+
+      activeOverlayRef.current.setMap(null);
+      searchMarkersRef.current.forEach((marker) => marker.setMap(null));
+      searchMarkersRef.current = [];
 
       setShowModal(false);
       setNewFriend({ friendName: "", latitude: null, longitude: null });
@@ -347,10 +351,7 @@ function MapBox() {
           closestLocation.x
         );
         mapRef.current.setCenter(markerPosition);
-      }
 
-      sortedData.forEach((result) => {
-        const markerPosition = new kakao.maps.LatLng(result.y, result.x);
         const searchMarkerImg = new kakao.maps.MarkerImage(
           `/images/search.svg`,
           new kakao.maps.Size(28, 28),
@@ -363,10 +364,10 @@ function MapBox() {
         );
 
         const overlayContent = createOverlayContent(
-          result.place_name,
-          result.address_name,
-          result.y,
-          result.x,
+          closestLocation.place_name,
+          closestLocation.address_name,
+          closestLocation.y,
+          closestLocation.x,
           "add"
         );
 
@@ -375,6 +376,7 @@ function MapBox() {
           map: null,
           position: marker.getPosition(),
           zIndex: 100,
+          yAnchor: 1,
         });
 
         kakao.maps.event.addListener(marker, "click", () => {
@@ -386,13 +388,96 @@ function MapBox() {
         });
 
         searchMarkersRef.current.push(marker);
-      });
+      }
+
+      // sortedData.forEach((result) => {
+      //   const markerPosition = new kakao.maps.LatLng(result.y, result.x);
+      //   const searchMarkerImg = new kakao.maps.MarkerImage(
+      //     `/images/search.svg`,
+      //     new kakao.maps.Size(28, 28),
+      //     { offset: new kakao.maps.Point(27, 69) }
+      //   );
+      //   const marker = createMarker(
+      //     markerPosition,
+      //     mapRef.current,
+      //     searchMarkerImg
+      //   );
+
+      //   const overlayContent = createOverlayContent(
+      //     result.place_name,
+      //     result.address_name,
+      //     result.y,
+      //     result.x,
+      //     "add"
+      //   );
+
+      //   const overlay = new kakao.maps.CustomOverlay({
+      //     content: overlayContent,
+      //     map: null,
+      //     position: marker.getPosition(),
+      //     zIndex: 100,
+      //   });
+
+      //   kakao.maps.event.addListener(marker, "click", () => {
+      //     if (activeOverlayRef.current) {
+      //       activeOverlayRef.current.setMap(null);
+      //     }
+      //     overlay.setMap(mapRef.current);
+      //     activeOverlayRef.current = overlay;
+      //   });
+
+      //   searchMarkersRef.current.push(marker);
+      // });
     } else {
       alert("검색 결과가 없습니다.");
     }
   };
 
   const handleListItemClick = (lat, lng, name, address) => {
+    searchMarkersRef.current.forEach((marker) => marker.setMap(null));
+    searchMarkersRef.current = [];
+    const markerPosition = new kakao.maps.LatLng(lat, lng);
+    const searchMarkerImg = new kakao.maps.MarkerImage(
+      `/images/search.svg`,
+      new kakao.maps.Size(28, 28),
+      { offset: new kakao.maps.Point(27, 69) }
+    );
+    const marker = createMarker(
+      markerPosition,
+      mapRef.current,
+      searchMarkerImg
+    );
+
+    const overlayContent = createOverlayContent(
+      name,
+      address,
+      lat,
+      lng,
+      "add"
+    );
+
+    const overlay = new kakao.maps.CustomOverlay({
+      content: overlayContent,
+      map: null,
+      position: marker.getPosition(),
+      zIndex: 100,
+      yAnchor: 1,
+    });
+
+    kakao.maps.event.addListener(marker, "click", () => {
+      if (activeOverlayRef.current) {
+        activeOverlayRef.current.setMap(null);
+      }
+      overlay.setMap(mapRef.current);
+      activeOverlayRef.current = overlay;
+    });
+
+    searchMarkersRef.current.push(marker);
+
+    mapRef.current.setCenter(markerPosition);
+  };
+
+  const handleFriendListItemClick = (lat, lng, name, address) => {
     const markerPosition = new kakao.maps.LatLng(lat, lng);
     mapRef.current.setCenter(markerPosition);
   };
@@ -452,7 +537,7 @@ function MapBox() {
                 <FriendListItem
                   key={idx}
                   onClick={() =>
-                    handleListItemClick(
+                    handleFriendListItemClick(
                       friend.latitude,
                       friend.longitude,
                       friend.friendName,
