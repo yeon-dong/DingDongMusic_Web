@@ -5,15 +5,23 @@ import {
   ArtistText,
   BackBtn,
   Container,
-  DetailText,
+  MusicDescription,
   MainText,
+  MusicDetailContent,
   MusicDetailHeader,
+  MusicDetailInfo,
+  MusicDetailText,
   MusicIMG,
+  MusicPrimaryInfo,
   MusicTitle,
+  RecommendContainer,
+  RecommendContent,
+  AddCartButton,
 } from "./MusicDetail.style";
 import musics from "../../data/data"; // musics 데이터 가져오기
 import { useDispatch } from "react-redux";
 import { addItem, calculateTotals } from "../../redux/cartSlice";
+import MySwiper from "../MainBox/MySwiper";
 
 function MusicDetail() {
   const dispatch = useDispatch();
@@ -44,17 +52,34 @@ function MusicDetail() {
 
   return (
     <Container>
-      <MusicDetailHeader>
-        <BackBtn src="/images/BackArrow.svg" onClick={handleBackClick} />
-        <MainText>노래 상세보기</MainText>
-      </MusicDetailHeader>
-      <MusicIMG src={`/images/${music.musicImgSrc}`} />
-      <MusicTitle>{music.musicName}</MusicTitle>
-      <ArtistText>{music.artistName}</ArtistText>
-      <DetailText>{music.description}</DetailText>
+      <MusicDetailInfo>
+        <MusicDetailHeader>
+          <BackBtn src="/images/BackArrow.svg" onClick={handleBackClick} />
+          <MainText>노래 상세보기</MainText>
+        </MusicDetailHeader>
+        <MusicDetailContent>
+          <MusicPrimaryInfo>
+            <MusicIMG src={`/images/${music.musicImgSrc}`} />
+            <MusicDetailText>
+              <MusicTitle>{music.musicName}</MusicTitle>
+              <ArtistText>{music.artistName}</ArtistText>
+            </MusicDetailText>
+          </MusicPrimaryInfo>
+          <MusicDescription>{music.description}</MusicDescription>
+          <AddCartButton onClick={() => addMusicToCart(music)}>
+            <img src="/images/cart-plus.svg" alt="add cart" />
+          </AddCartButton>
+        </MusicDetailContent>
+      </MusicDetailInfo>
+      <RecommendContainer>
+        <RecommendContent>
+          <MySwiper title="비슷한 곡" startDelay={0} />
+        </RecommendContent>
+      </RecommendContainer>
+      {/* 
       <AddCartBtn onClick={() => addMusicToCart(music)}>
         장바구니에 담기
-      </AddCartBtn>
+      </AddCartBtn> */}
     </Container>
   );
 }

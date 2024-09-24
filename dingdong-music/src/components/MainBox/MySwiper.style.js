@@ -9,7 +9,7 @@ export const MySwiperTitle = styled.h2`
   font-weight: bold;
   color: white;
   height: 42px;
-  margin: 9px 0;
+  padding: 9px 0;
   display: flex;
   align-items: flex-end;
 `;
