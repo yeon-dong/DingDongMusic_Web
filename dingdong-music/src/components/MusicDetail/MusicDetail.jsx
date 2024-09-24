@@ -76,10 +76,10 @@ function MusicDetail() {
           <MySwiper title="비슷한 곡" startDelay={0} />
         </RecommendContent>
       </RecommendContainer>
-
+      {/* 
       <AddCartBtn onClick={() => addMusicToCart(music)}>
         장바구니에 담기
-      </AddCartBtn>
+      </AddCartBtn> */}
     </Container>
   );
 }
