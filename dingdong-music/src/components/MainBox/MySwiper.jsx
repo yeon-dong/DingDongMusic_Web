@@ -16,8 +16,7 @@ import musics from "../../data/data";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addPlaylist, setSelectedIndex } from "../../redux/playlistSlice";
-import { resetMusic, setPlayingMusic } from "../../redux/playingMusicSlice";
+import { addPlaylist, setSelectedIndex, resetMusic, setPlayingMusic } from "../../redux/playlistSlice";
 
 const MySwiper = ({ title, type, startDelay }) => {
   const dispatch = useDispatch();
